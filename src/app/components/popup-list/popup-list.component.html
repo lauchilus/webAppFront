@@ -1,0 +1,37 @@
+
+@if (select) {
+    <div mat-dialog-actions class="flex justify-center">
+        <button (click)="activateCreateView()" mat-raised-button class='inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg'>Create List</button>
+        <button (click)="activateAddView()" class="ml-4 inline-flex text-gray-400 bg-gray-800 border-0 py-2 px-6 focus:outline-none hover:bg-gray-700 hover:text-white rounded text-lg">Add To List</button>
+    </div>
+
+}@else if(create && !add && !select){
+    <form [formGroup]="myform" (submit)="createList()">
+        <h1 mat-dialog-title class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Create List!</h1>
+        <div mat-dialog-content class="grid grid-cols-1 grid-rows-1">
+            <input type="file" class="file-upload" (change)="onFileSelected($event)">
+            <mat-form-field>
+                <mat-label>name</mat-label>
+                <input formControlName="name" matInput>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions class="flex justify-center">
+            <button mat-raised-button class='inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg'>Create</button>
+            <button (click)="closePopup()" class="ml-4 inline-flex text-gray-400 bg-gray-800 border-0 py-2 px-6 focus:outline-none hover:bg-gray-700 hover:text-white rounded text-lg">Cancel</button>
+        </div>
+        </form>
+}@else if(add && !create && !select) {
+    <mat-form-field>
+        <mat-label>Select a list </mat-label>
+        <mat-select [(value)]="selected">
+            <mat-option>None</mat-option>
+            @for (item of listUser; track item.id) {
+                <mat-option value={{item.id}}>{{item.name}}</mat-option>
+            }
+        </mat-select>
+      </mat-form-field>
+      
+      <button (click)="addToList(gameId)" mat-raised-button class='inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg'>Add</button>
+}
+
+    

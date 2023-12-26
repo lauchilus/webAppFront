@@ -1,0 +1,35 @@
+<div class="bg-gradient-to-r from-gray-900 to-violet-500 min-h-screen">
+    <div class="grid grid-cols-2 gap-4 px-24 pt-4 auto-rows-max">
+        <div class="justify-self-auto">
+            <h1 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">List {{list.name}} Games!</h1>
+        </div>
+
+        <div class="col-span-2 flex justify-center flex-row flex-wrap gap-3 items-center">
+            <div class="container px-5 py-24 mx-auto">
+                <div class="flex flex-wrap sm:-m-4 -mx-2 -mb-10 -mt-4">
+                    @defer (on timer(5s)) {
+                        @for (item of listGames; track item.id) {
+                            <div class="border-2 border-solid border-fuchsia-600 p-2 m-auto mb-4">
+                                <div class="p-4 md:w-1/4 sm:w-1/2 w-full mb-6 ">
+                                    <div class="rounded-lg overflow-hidden size-64 align-center">
+                                        <a href="/details/{{item.id}}">
+                                            <img alt="content" class="object-cover object-center h-full w-full" src="{{item.imageUrl}}">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-cyan- text-white">{{item.name}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @placeholder () {
+                        <img class="w-12 h-12 rounded-full m-auto" alt="loading..." src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

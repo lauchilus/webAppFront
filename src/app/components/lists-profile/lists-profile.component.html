@@ -1,0 +1,56 @@
+<div class="bg-gradient-to-r from-gray-900 to-violet-500 min-h-screen">
+    <div class="grid grid-cols-2 gap-4 px-24 m-auto auto-rows-max">
+        <div class="justify-self-auto">
+            <h1 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">Reviews
+            </h1>
+        </div>
+
+        
+
+        <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
+
+            <div class="container px-5 py-24 mx-auto">
+
+                <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
+                    @defer (on timer(3s)) {
+                    @for (item of listsUser; track item.id) {
+
+
+
+                    <div class="p-4 md:w-1/3 sm:mb-0 mb-6 gap-2 flex flex-wrap flex-row ">
+                        <div class="border-2 border-solid border-fuchsia-600  p-2 m-auto">
+                            <div class="rounded-lg overflow-hidden size-64 align-center">
+                              <a href="/profile/list/games/{{item.id}}">
+                                <img   alt="content" class="object-cover object-center h-full w-full cursor-pointer"
+                                    src="{{item.imageUrl}}">
+                              </a>
+                               
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-medium title-font text-gray-900 mt-5 text-white">
+                                    {{item.name}}</h3>
+                                <h3 class="text-amber-950 text-yellow-300">❤{{item.likes}}</h3>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    }
+                    }
+
+                    @placeholder () {
+                    <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
+                        src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

@@ -8,9 +8,14 @@ import { PlayedProfileComponent } from './components/played-profile/played-profi
 import { ReviewsProfileComponent } from './components/reviews-profile/reviews-profile.component';
 import { ListsProfileComponent } from './components/lists-profile/lists-profile.component';
 import { ListGamesComponent } from './components/list-games/list-games.component';
+import { registerComponent } from 'igniteui-webcomponents/components/common/definitions/register';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     { path: 'home', component: LandingSearchComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'login', component: LoginComponent },
     { path: 'details/:id', component: GameDetailsComponent },
     { path: 'search/:game', component: SearchGameComponent },
     { path: 'search', component: SearchListGamesComponent },

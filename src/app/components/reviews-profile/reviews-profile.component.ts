@@ -14,12 +14,11 @@ import { Review } from '../../models/review';
 })
 export class ReviewsProfileComponent {
 
-  userId !:number ;
+  userId = localStorage.getItem("UID");
   reviews : Review[] = [];
   
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute) {}
   ngOnInit(): void {
-    this.userId = this.route.snapshot.params['id']
     this.fetchDataPlayed();
   }
 

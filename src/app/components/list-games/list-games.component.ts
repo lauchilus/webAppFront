@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ListGamesComponent implements OnInit {
 
-  userId = 3;
+  userId = localStorage.getItem("UID");
   list !: any;
   listGames !: Gameslist[];
 

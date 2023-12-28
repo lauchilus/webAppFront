@@ -1,32 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { GameDetails } from '../../models/game-details';
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule,MatFormField} from "@angular/material/form-field";
 import { PopupReviewComponent } from '../popup-review/popup-review.component';
 import { PopupListComponent } from '../popup-list/popup-list.component';
 import { Observable } from 'rxjs';
+import { loggerInterceptor } from '../../logger.interceptor';
 
 
 @Component({
   selector: 'app-game-details',
   standalone: true,
-  imports: [HttpClientModule,MatFormFieldModule,MatDialogModule],
+  imports: [HttpClientModule,MatFormFieldModule,MatDialogModule,],
   templateUrl: './game-details.component.html',
-  styleUrl: './game-details.component.css'
+  styleUrl: './game-details.component.css',
+  
+  
 })
+
 export class GameDetailsComponent implements OnInit {
 
+  private headers!: HttpHeaders;
+
   gameDetails!: GameDetails;
-  
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private route: ActivatedRoute, private dialog: MatDialog,) {}
+  httpClient = inject(HttpClient)
+  constructor( private sanitizer: DomSanitizer,private route: ActivatedRoute, private dialog: MatDialog,) {
+    this.headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+  }
 
   ngOnInit(): void {
     const game = this.route.snapshot.params['id'];
       console.log(game)
       this.fetchDataGame(game);
+      
   }
 
   
@@ -53,7 +64,7 @@ OpenPopUpReview(){
   var popup = this.dialog.open(PopupReviewComponent,{
     width : '30%',
     data:{      
-      userId : 3,
+      userId : localStorage.getItem('UID'),
       gameId : this.gameDetails.id,
       name : this.gameDetails.name,
     }
@@ -67,7 +78,7 @@ OpenPopUpList() {
   var popup = this.dialog.open(PopupListComponent,{
     width : '30%',
     data:{      
-      userId : 3,
+      userId : localStorage.getItem('UID'),
       gameId : this.gameDetails.id
     }
   })
@@ -77,7 +88,7 @@ OpenPopUpList() {
   } 
 
   AddToPlayed(){
-    this.httpClient.post(`http://localhost:8080/played?user=` + 3 + "&gameID=" + this.gameDetails.id, null )
+    this.httpClient.post(`http://localhost:8080/played?user=` + localStorage.getItem("UID") + "&gameID=" + this.gameDetails.id, null,{ headers: this.headers  } )
       .subscribe((data: any) => {
         console.log(data);
           this.gameDetails = data;
@@ -91,7 +102,7 @@ OpenPopUpList() {
   }
 
   AddToBacklog(){
-    this.httpClient.post(`http://localhost:8080/backlog?user=` + 3 + "&gameId=" + this.gameDetails.id, null )
+    this.httpClient.post(`http://localhost:8080/backlog?user=` + localStorage.getItem("UID") + "&gameId=" + this.gameDetails.id, null,{ headers: this.headers  }  )
       .subscribe((data: any) => {
         console.log(data);
           this.gameDetails = data;
@@ -105,7 +116,7 @@ OpenPopUpList() {
   }
 
   AddToFavorites(){
-    this.httpClient.post(`http://localhost:8080/favorite?userId=` + 3 + "&gameId=" + this.gameDetails.id, null )
+    this.httpClient.post(`http://localhost:8080/favorite?userId=` + localStorage.getItem('UID')+"&gameId=" + this.gameDetails.id,null,{ headers: this.headers  } )
       .subscribe((data: any) => {
         console.log(data);
           this.gameDetails = data;

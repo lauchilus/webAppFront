@@ -15,7 +15,73 @@
                             <a href="#" class="text-blue-500">Follow</a>
                             <a href="#" class="text-blue-500">Follower</a>
                         </div>
+
                     </div>
+                    <div class="m-5">
+                        <button (click)="editPopup=!editPopup"
+                            class="flex p-2.5 bg-pink-500 rounded-xl hover:rounded-3xl hover:bg-pink-600 transition-all duration-300 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </button>
+                        @if (editPopup) {
+                        <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white z-30"
+                            (click)="closePopup($event)">
+                            <div class="bg-gray-700 p-8 rounded " (click)="stopPropagation($event)">
+                                <!-- Contenido del pop-up -->
+
+                                <form [formGroup]="myform" class="max-w-lg mx-auto">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="user_avatar">Upload file</label>
+                                    <input (change)="onFileSelected($event)"
+                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        aria-describedby="user_avatar_help" id="user_avatar" type="file">
+                                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help">A
+                                        profile picture.</div>
+
+                                    <div>
+                                        <label for="website-admin"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                                        <div class="flex">
+                                            <span
+                                                class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                                                </svg>
+                                            </span>
+                                            <input formControlName="username" matInput type="text" id="website-admin"
+                                                class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Enter Username">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="message"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                            Bio</label>
+                                        <textarea formControlName="bio" matInput id="message" rows="4"
+                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Leave a comment..."></textarea>
+
+                                    </div>
+                                </form>
+
+                                <button (click)="editProfile()"
+                                    class='bg-pink-500 text-white px-4 py-2 mt-4 rounded m-auto'>Create</button>
+                                <button (click)="editPopup=!editPopup"
+                                    class="bg-pink-500 text-white px-4 py-2 mt-4 rounded m-auto">Cancel</button>
+
+                            </div>
+                        </div>
+
+                        }
+                    </div>
+
                 </div>
 
 
@@ -29,11 +95,11 @@
             <nav class="border-2 border-fuchsia-900  p-5">
                 <div class="container flex justify-between items-center">
                     <ul class="flex space-x-2">
-                        
+
                         <li><a href="/profile/reviews/{{userId}}"
                                 class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Reviews</a>
                         </li>
-                        <li><a href="/backlog"
+                        <li><a href="/profile/backlog/{{userId}}"
                                 class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Backlog</a>
                         </li>
                         <li><a href="/profile/played/{{userId}}"
@@ -57,43 +123,44 @@
             <div class="text-right underline underline-offset-1 text-purple-300">
                 <a href="">all</a>
             </div>
-           
-                <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
+
+            <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
                 @defer ( on timer(5s)) {
-                    @for (fav of favGames; track fav.id) {
-                    <div>
-                        <a href="#">
-                            <div
-                                class="relative size-64 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
-                                <div [style.background-image]="fav.imageUrlTrust"
-                                    class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none group-hover:filter brightness-110 transition-all">
-                                    <div
-                                        class="absolute inset-0 to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50">
-                                    </div>
+                @for (fav of favGames; track fav.id) {
+                <div>
+                    <a href="/details/{{fav.gameId}}">
+                        <div
+                            class="relative size-64 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
+                            <div [style.background-image]="fav.imageUrlTrust"
+                                class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none group-hover:filter brightness-110 transition-all">
+                                <div
+                                    class="absolute inset-0 to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50">
                                 </div>
-    
                             </div>
-                        </a>
-                    </div>
-                    }
-    
-                
-            
-            } 
-            @placeholder () {
-            <img class="w-12 h-12 rounded-full" alt="loading..."
-                src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
-            }
-        </div>
+
+                        </div>
+                    </a>
+                </div>
+                }
+
+
+
+                }
+                @placeholder () {
+                <img class="w-12 h-12 rounded-full" alt="loading..."
+                    src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
+                }
+            </div>
             <!--FAVORITES-->
-            
+
         </div>
 
-        
+
         <!--LAST REVIEWS-->
         <div class="grid grid-cols-2 gap-4 px-24 mt-4 auto-rows-max">
             <div class="justify-self-auto">
-                <h2 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">Last Reviews
+                <h2 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">Last
+                    Reviews
                 </h2>
             </div>
             <div class="text-right underline underline-offset-1 text-purple-300">
@@ -101,44 +168,43 @@
             </div>
 
             <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
-                
+
                 <div class="container px-5 py-24 mx-auto">
 
                     <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
                         @defer (on timer(3s)) {
-                            @for (item of reviews; track item.gameId) {
+                        @for (item of reviews; track item.gameId) {
 
 
 
-                                <div
-                                    class="p-4 md:w-1/3 sm:mb-0 mb-6 gap-2 flex flex-wrap flex-row ">
-                                    <div class="border-2 border-solid border-fuchsia-600  p-2 m-auto">
-                                        <div class="rounded-lg overflow-hidden size-64 align-center">
-                                            <img alt="content" class="object-cover object-center h-full w-full "
-                                                src="{{item.gameImage}}">
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-medium title-font text-gray-900 mt-5 text-white">
-                                                {{item.name}}</h3>
-                                            <h5 class="text-cyan- text-white">{{item.date}}</h5>
-                                            <h3 class="text-amber-950 text-yellow-300">⭐{{item.rating}}</h3>
-                                            <p class="text-base leading-relaxed mt-2 text-white">{{item.review}}.</p>
-        
-        
-                                        </div>
-        
-                                    </div>
-        
-        
+                        <div class="p-4 md:w-1/3 sm:mb-0 mb-6 gap-2 flex flex-wrap flex-row ">
+                            <div class="border-2 border-solid border-fuchsia-600  p-2 m-auto">
+                                <div class="rounded-lg overflow-hidden size-64 align-center">
+                                    <img alt="content" class="object-cover object-center h-full w-full "
+                                        src="{{item.gameImage}}">
                                 </div>
-        
-                                }
+                                <div>
+                                    <h3 class="text-xl font-medium title-font text-gray-900 mt-5 text-white">
+                                        {{item.name}}</h3>
+                                    <h5 class="text-cyan- text-white">{{item.date}}</h5>
+                                    <h3 class="text-amber-950 text-yellow-300">⭐{{item.rating}}</h3>
+                                    <p class="text-base leading-relaxed mt-2 text-white">{{item.review}}.</p>
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
                         }
-                        
+                        }
+
                         @placeholder () {
-                            <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
-                                src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
-                            }
+                        <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
+                            src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
+                        }
                     </div>
                 </div>
 

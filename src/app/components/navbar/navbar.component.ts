@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
 
-  userId = 3;
+  userId = localStorage.getItem("UID");;
   constructor(private router: Router) {}
 
   @HostListener('document:keydown.enter', ['$event'])

@@ -5,7 +5,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReviewService } from '../../services/review.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Review } from '../../models/review';
 import { ReviewPost } from '../../models/review-post';
 import { List } from '../../models/list';
@@ -14,12 +14,11 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-popup-list',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule,FormsModule],
   templateUrl: './popup-list.component.html',
   styleUrl: './popup-list.component.css'
 })
 export class PopupListComponent {
-
 
   create: boolean = false;
   add: boolean = false;
@@ -34,11 +33,17 @@ export class PopupListComponent {
   image: any;
   srcResult: any;
   selected: any;
-  userId = 3;
+  userId = localStorage.getItem("UID");
 
   gameId !: number;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopupListComponent>, private form: MatFormFieldModule, private buildr: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute) { }
+  headers !: HttpHeaders;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopupListComponent>, private form: MatFormFieldModule, private buildr: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute) {
+    this.headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+   }
 
   ngOnInit(): void {
     this.inputData = this.data;
@@ -64,9 +69,9 @@ export class PopupListComponent {
 
   createList() {
     const url = this.baseUrl + "userID=" + this.inputData.userId + "&name=" + this.myform.value.name;
-
-
-    this.httpClient.post<any>(url, this.formImage).subscribe(res => {
+    
+    console.log("AAAAA"+this.formImage.has('image'))
+    this.httpClient.post<any>(url, this.formImage, {headers:this.headers}).subscribe(res => {
       console.log(res);
       console.log(this.formImage)
       this.closePopup();
@@ -79,18 +84,19 @@ export class PopupListComponent {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      const formdata = new FormData();
-      formdata.append('image', file)
-      this.formImage = formdata
+      const formData = new FormData()
+      formData.append('image', file)
+      this.formImage.append('image',file);
     };
+    console.log(this.formImage.get('image'))
   }
 
   addToList(game: number) {
-    const url = `http://localhost:8080/list/addGame?userID=${3}&gameID=${this.data.gameId}&collectionID=${this.selected}`
+    const url = `http://localhost:8080/list/addGame?userID=${localStorage.getItem('UID')}&gameID=${this.data.gameId}&collectionID=${this.selected}`
 
     console.log("SELECTED: " + this.selected, " GAME ID: " + this.gameId)
 
-    this.httpClient.post<any>(url, null).subscribe(res => {
+    this.httpClient.post<any>(url, null,{headers: this.headers}).subscribe(res => {
       console.log(res);
       console.log(this.formImage)
       this.closePopup();

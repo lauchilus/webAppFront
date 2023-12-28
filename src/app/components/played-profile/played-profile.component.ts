@@ -15,13 +15,12 @@ import { PaginationService } from '../../services/pagination.service';
 })
 export class PlayedProfileComponent implements OnInit{
   
-  userId !:number ;
+  userId = localStorage.getItem("UID"); ;
   playedList : Played[] = [];
   page : number = 0;
   
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute,private paginat: PaginationService) {}
   ngOnInit(): void {
-    this.userId = this.route.snapshot.params['id']
     this.page = this.paginat.getOffset();
     this.fetchDataPlayed(this.page);
   }

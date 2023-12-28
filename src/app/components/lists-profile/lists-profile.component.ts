@@ -17,7 +17,7 @@ export class ListsProfileComponent implements OnInit {
 
   objectToPass !: any ;
   listsUser !: List[]
-  userId = 3;
+  userId = localStorage.getItem("UID"); ;
 
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private router: ActivatedRoute) {}
 

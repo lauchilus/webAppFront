@@ -9,7 +9,7 @@
     <form [formGroup]="myform" (submit)="createList()">
         <h1 mat-dialog-title class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Create List!</h1>
         <div mat-dialog-content class="grid grid-cols-1 grid-rows-1">
-            <input type="file" class="file-upload" (change)="onFileSelected($event)">
+            <input type="file"  class="file-upload" (change)="onFileSelected($event)">
             <mat-form-field>
                 <mat-label>name</mat-label>
                 <input formControlName="name" matInput>

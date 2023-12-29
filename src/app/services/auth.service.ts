@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders,HttpClientModule } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { Observable } from 'rxjs';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,11 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   auth: any;
+  loggedIn = false;
 
-  UrlRegisterback : string = `http://localhost:8080/auth/register`
+  private _miVariable = new BehaviorSubject<boolean>(false);
+
+  UrlRegisterback: string = `http://localhost:8080/auth/register`
 
   firebaseConfig = {
     apiKey: "AIzaSyBrUuNI_JjJngqir_fbymc1YL7OECJyx6g",
@@ -22,35 +26,52 @@ export class AuthService {
     appId: "1:1047278251796:web:6275338dec24e553c99c01"
   };
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private route: Router) {
     const app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(app);
-   }
-
-  Register(email: string,pass:string){
-    createUserWithEmailAndPassword(this.auth, email, pass)
-		  .then(async (userCredential) => {
-		    // Signed in 
-		    const user = userCredential.user;
-		    console.log(user);
-        localStorage.setItem('token', await user.getIdToken())
-
-		    alert("Registration successfully!!");
-		    // ...
-		  })
-		  .catch((error) => {
-		    const errorCode = error.code;
-		    const errorMessage = error.message;
-		    // ..
-		    console.log(errorMessage);
-		    alert(error);
-		  });		  		  
+    
   }
 
-  SaveUserDB(UID: string, email: string){
+  checkUser(email:string,username: string){
+    const urlCheck = `http://localhost:8080/auth/verifyuser?username=${username}&email=${email}`;
+    
+    // Retornar el observable resultante de la petición HTTP
+    return this.httpClient.get<boolean>(urlCheck);
+    }
+  
+
+  Register(email: string, pass: string,username:string) {
+    
+    createUserWithEmailAndPassword(this.auth, email, pass)
+      .then(async (userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        localStorage.setItem('token', await user.getIdToken())
+        localStorage.setItem('UID', await user.uid)
+        const emaill = user.email;
+        const UID = user.uid
+        this._miVariable.next(true);
+        this.SaveUserDB(UID, email,username);
+        alert("Registration successfully!!");
+        this.loggedIn = true
+        this.route.navigateByUrl("/profile/" + localStorage.getItem('UID'))
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        console.log(errorMessage);
+        alert(error);
+      });
+  }
+
+  SaveUserDB(UID: string, email: string,username:string) {
     const registerData = {
-      email : email,
-      userUID: UID
+      email: email,
+      userUID: UID,
+      username: username
     }
     const httpOptions = {
       headers: new HttpHeaders({
@@ -58,21 +79,53 @@ export class AuthService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       }),
     };
-    this.httpClient.post(this.UrlRegisterback,registerData,httpOptions);
+    this.httpClient.post(this.UrlRegisterback, registerData, httpOptions).subscribe(
+      response => console.log('Solicitud exitosa', response),
+      error => console.error('Error en la solicitud', error)
+    );;
   }
 
-  
-    login(email: string, password: string): Observable<any> {
-      return new Observable((observer) => {
-        this.auth.signInWithEmailAndPassword(email, password)
-          .then((userCredential: { user: { getIdToken: () => any; }; }) => {
-            const token = userCredential.user?.getIdToken();
-            observer.next(token);
-            observer.complete();
-          })
-          .catch((error: any) => {
-            observer.error(error);
-          });
+
+  login(email: string, password: string) {
+    return signInWithEmailAndPassword(this.auth, email, password)
+      .then(async (userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        localStorage.setItem('token', await user.getIdToken())
+        localStorage.setItem('UID', await user.uid)
+        console.log(user);
+        this.loggedIn =true;
+        this._miVariable.next(true);
+        alert(user.email + " Login successfully!!!");
+        this.route.navigateByUrl("/profile/" + localStorage.getItem('UID'))
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        alert(errorMessage);
       });
+  };
+
+
+  checkIfLoged() {
+    const token = localStorage.getItem('token');
+    if(token === null) return false;
+    // Comprobar si el token es válido
+    return this.auth.isTokenValid(token);
+  }
+
+  logOut() {
+
+    this.auth.signOut();
+    localStorage.clear();
+    this.loggedIn = false;
+    this._miVariable.next(false);
+  }
+
+  isLogged(){
+    console.log(this._miVariable)
+    return this._miVariable.asObservable();
   }
 }

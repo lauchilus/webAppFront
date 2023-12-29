@@ -1,1 +1,43 @@
-<p>backlog-profile works!</p>
+<div class="bg-gradient-to-r from-gray-900 to-violet-500 h-screen">
+
+    <h1 class=" text-white font-semibold text-center font-medium text-4xl">BACKLOG</h1>
+    <div class="container px-5 py-24 mx-auto">
+      <div class="grid grid-cols-4 gap-4">
+          @for (game of listGames; track game.id) {
+              <a href="/details/{{game.id}}">
+                  <div class="relative h-96 max-w-[28rem] overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
+                      <div [style.background-image]="game.imageUrlTrust"
+                           class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none group-hover:filter brightness-110 transition-all">
+                          <div class="absolute inset-0 to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
+                      </div>
+                      <div class="relative p-6 md:p-5">
+                          <h2 class="mb-6 block font-sans text-xl font-medium leading-[1.5] tracking-normal text-white antialiased">
+                              {{game.name}}
+                          </h2>
+                      </div>
+                  </div>
+              </a>
+          }
+      </div>
+      
+    </div>
+    <div class="pb-5 flex justify-center">
+      <div class="flex">
+          <!-- Previous Button -->
+          <button (click)="previousPagination()" class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+            </svg>
+            Previous
+          </button>
+          <!-- Next Button -->
+          <button (click)="nextPage()" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Next
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+          </button>
+      </div>
+    </div>
+    </div>
+        

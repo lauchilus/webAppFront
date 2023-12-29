@@ -2,26 +2,28 @@
 <div class="bg-gradient-to-r from-gray-900 to-violet-500">
 
 
-<div class="flex flex-col items-center justify-center h-screen ">
+<div class="flex flex-col items-center justify-center h-screen  "  >
     <!-- Contenedor principal -->
     <div class="bg-gray-100 p-8 rounded-lg shadow-lg text-center">
       
       <!-- Imagen -->
-      <img src="ruta-de-la-imagen.jpg" alt="Descripción de la imagen" class="w-32 h-32 mx-auto mb-4 rounded-full">
+      <img src="https://static.thenounproject.com/png/2929855-200.png" alt="Descripción de la imagen" class="w-32 h-32 mx-auto mb-4 rounded-full">
   
       <!-- Título -->
       <h1 class="text-2xl font-bold mb-4">Search a game!</h1>
   
       <!-- Cuadrado de búsqueda -->
-      <div class="relative">
-        <input [(ngModel)]="searchTerm" type="text" placeholder="Buscar..." class="w-full py-2 pl-8 pr-4 border rounded-full focus:outline-none focus:border-blue-500">
+      <div class="relative ">
+        <input [(ngModel)]="searchTerm" id="search-landing" type="text" placeholder="Buscar..." class="w-full py-2 pl-8 pr-4 border rounded-full focus:outline-none focus:border-blue-500">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
-          <svg class="h-5 w-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="h-5 w-5 text-gray-500 mb-12" fill="currentColor" viewBox="0 0 20 20">
             <!-- Icono de búsqueda (puedes cambiarlo según tus necesidades) -->
             <path fill-rule="evenodd" d="M8 0a8 8 0 0 1 5.78 13.78l5.85 5.86-1.42 1.42-5.86-5.85A8 8 0 1 1 8 0zm0 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2z"></path>
           </svg>
         </div>
-        <a routerLink="/search/{{searchTerm}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</a>
+        <button  type="button"
+            class="text-white m-auto bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 ">Search
+            </button>
       </div>
   
     </div>

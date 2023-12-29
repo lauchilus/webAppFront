@@ -22,6 +22,10 @@ export class ProfileComponent implements OnInit {
   editPopup = false;
   avatar!: File;
 
+  username !: string;
+  bio !: string;
+  profilePic !: string;
+
   urlTrust = "";
   userId = localStorage.getItem("UID");
   favGames: Favorite[] = [];
@@ -42,6 +46,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.fetchDataFavorites();
     this.fetchDataReviews();
+    this.fetchDataUser();
     this.headers = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
@@ -49,6 +54,16 @@ export class ProfileComponent implements OnInit {
 
   getSafeImageUrl(url: string): any {
     return this.sanitizer.bypassSecurityTrustStyle(`url('${url}')`);
+  }
+
+  fetchDataUser(){
+    this.httpClient.get(`http://localhost:8080/user?id=${this.userId}`).subscribe(
+      (data: any) =>{
+        this.username = data.username;
+        this.bio = data.bio;
+        this.profilePic = data.imageUrl;
+      }
+    )
   }
 
   fetchDataFavorites() {
@@ -135,4 +150,11 @@ interface FormModel {
   username?: string | null;
   bio?: string | null;
   avatar?: File | null;
+}
+
+interface UserData{
+  id : string,
+  username ?: string | "update username",
+  bio ?: string | null,
+  avatar ?: string 
 }

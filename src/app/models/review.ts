@@ -6,4 +6,5 @@ export interface Review {
     gameImage: string
     imageUrlTrust: string
     name: string
+    id: number
 }

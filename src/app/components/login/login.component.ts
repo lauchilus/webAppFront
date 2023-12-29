@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } f
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   pass: string = "";
   auth: any;
 
-constructor(private route:Router){}
+  constructor(private route: Router, private authService: AuthService) { }
   ngOnInit(): void {
     const app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(app);
@@ -37,26 +38,7 @@ constructor(private route:Router){}
   };
 
   signIn() {
-
-
-    signInWithEmailAndPassword(this.auth, this.email, this.pass)
-      .then(async (userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        localStorage.setItem('token', await user.getIdToken())
-        localStorage.setItem('UID', await user.uid)
-        console.log(user);
-        alert(user.email + " Login successfully!!!");
-        this.route.navigateByUrl("/profile/" + localStorage.getItem('UID'))
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        alert(errorMessage);
-      });
-  };
+    this.authService.login(this.email, this.pass);
+  }
 }
-
 

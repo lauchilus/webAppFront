@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SearchGameComponent implements OnInit {
   
-  listGames : Gameslist[] = [];
+  listGames : any[] = [];
   offset: number = 0;
  
 
@@ -27,15 +27,16 @@ export class SearchGameComponent implements OnInit {
       const game = this.route.snapshot.params['game'];
       console.log(game+"aaaa")
       this.fetchDataList(game);
+      this.offset = this.paginat.getOffset()
       
   }
 
   fetchDataList(game: string) {
-    this.httpClient.get(`http://localhost:8080/games/a/${game}?offset=`+this.paginat.getOffset())
+    this.httpClient.get(`http://localhost:8080/games/a/${game}?offset=`+this.offset)
       .subscribe((data: any) => {
         console.log(data);
 
-        this.listGames = data.map((games: Gameslist) => {
+        this.listGames = data.map((games: any) => {
           return {
             ...games,
             imageUrlTrust: this.getSafeImageUrl(games.imageUrl)

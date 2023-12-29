@@ -2,91 +2,96 @@ import { Component, OnInit } from '@angular/core';
 import { initializeApp } from "firebase/app";
 import { AuthSettings, createUserWithEmailAndPassword, getAuth, getIdToken } from "firebase/auth";
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule,HttpClientModule],
+  imports: [FormsModule,HttpClientModule,MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule,FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
-  public user !: Observable<any>;
+  email: string = '';
+  pass: string = '';
+  usernameReg: string = '';
 
-  email : string = "";
-  pass : string = "";
-  
+  userAvailable = false;
 
   auth: any;
 
-  UrlRegisterback : string = `http://localhost:8080/auth/register`
+  private usernameSubject = new Subject<string>();
 
   firebaseConfig = {
-    apiKey: "AIzaSyBrUuNI_JjJngqir_fbymc1YL7OECJyx6g",
-    authDomain: "gamelist-2d76b.firebaseapp.com",
-    projectId: "gamelist-2d76b",
-    storageBucket: "gamelist-2d76b.appspot.com",
-    messagingSenderId: "1047278251796",
-    appId: "1:1047278251796:web:6275338dec24e553c99c01"
+    apiKey: 'AIzaSyBrUuNI_JjJngqir_fbymc1YL7OECJyx6g',
+    authDomain: 'gamelist-2d76b.firebaseapp.com',
+    projectId: 'gamelist-2d76b',
+    storageBucket: 'gamelist-2d76b.appspot.com',
+    messagingSenderId: '1047278251796',
+    appId: '1:1047278251796:web:6275338dec24e553c99c01',
   };
 
-  constructor(private httpClient: HttpClient, private route: Router) {
-    
-   }
+  constructor(
+    private httpClient: HttpClient,
+    private route: Router,
+    private authService: AuthService
+  ) {
+    this.usernameSubject
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((user:string) => this.verifyUsername(user))
+      )
+      .subscribe((available: boolean) => {
+        this.userAvailable = available;
+      });
+  }
+
   ngOnInit(): void {
     const app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(app);
   }
 
-  
-   
-
-  Register(){
-    createUserWithEmailAndPassword(this.auth, this.email, this.pass)
-		  .then(async (userCredential) => {
-		    // Signed in 
-		    const user = userCredential.user;
-		    console.log(user);
-        localStorage.setItem('token', await user.getIdToken())
-        localStorage.setItem('UID', await user.uid)
-        const email = user.email;
-        const UID = user.uid
-        this.SaveUserDB(UID,this.email);
-		    alert("Registration successfully!!");
-        this.route.navigateByUrl("/profile/" + localStorage.getItem('UID'))
-		    // ...
-		  })
-		  .catch((error) => {
-		    const errorCode = error.code;
-		    const errorMessage = error.message;
-		    // ..
-		    console.log(errorMessage);
-		    alert(error);
-		  });				  
+  Register() {
+    console.log(this.usernameReg)
+    console.log(this.email)
+    this.authService.checkUser(this.email, this.usernameReg).subscribe(
+      (isUserAvailable: boolean) => {
+        if (!isUserAvailable) {
+          // Si el usuario está disponible, realiza el registro
+          this.registerRegister();
+        } else {
+          // Si el usuario no está disponible, maneja la situación
+          alert('Username or Email already in Use.');
+        }
+      },
+      (error: any) => {
+        // Manejar el error en caso de que la verificación del usuario falle
+        console.error( error);
+      }
+    );
   }
 
-  SaveUserDB(UID: string, email: string){
-    const registerData = {
-      email : email,
-      userUID: UID
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      }),
-    };
-    this.httpClient.post(this.UrlRegisterback,registerData,httpOptions).subscribe(
-      response => console.log('Solicitud exitosa', response),
-      error => console.error('Error en la solicitud', error)
-    );;
+  registerRegister(){
+    this.authService.Register(this.email,this.pass,this.usernameReg)
   }
-	  
+
+  onUsernameChange(username: string) {
+    this.usernameSubject.next(username);
+  }
+
+  verifyUsername(username: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(
+      `http://localhost:8080/user/verify?username=${this.usernameReg}`
+    );
+  }
   }
   
 

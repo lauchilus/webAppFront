@@ -73,7 +73,7 @@ export class PopupListComponent {
     console.log("AAAAA"+this.formImage.has('image'))
     this.httpClient.post<any>(url, this.formImage, {headers:this.headers}).subscribe(res => {
       console.log(res);
-      console.log(this.formImage)
+      console.log(this.formImage);
       this.closePopup();
       alert("List Created!")
     });

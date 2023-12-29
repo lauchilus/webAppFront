@@ -16,6 +16,6 @@ import { loggerInterceptor } from './logger.interceptor';
     imports: [CommonModule, RouterOutlet, NavbarComponent, SearchGameComponent, FooterComponent, MatProgressBarModule,HttpClientModule]
 })
 export class AppComponent{
-  title = 'gamelist-front';
+  title = 'gamelist';
   
 }

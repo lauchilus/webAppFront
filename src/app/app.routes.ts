@@ -11,6 +11,7 @@ import { ListGamesComponent } from './components/list-games/list-games.component
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { BacklogProfileComponent } from './components/backlog-profile/backlog-profile.component';
+import { ReviewDetailsComponent } from './components/review-details/review-details.component';
 
 export const routes: Routes = [
     { path: 'home', component: LandingSearchComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'search', component: SearchListGamesComponent },
     { path: 'profile/:id', component: ProfileComponent },
     { path: 'profile/played/:id', component: PlayedProfileComponent },
+    { path: 'reviews/details/:reviewId', component: ReviewDetailsComponent },
     { path: 'profile/reviews/:id', component: ReviewsProfileComponent },
     { path: 'profile/backlog/:id', component: BacklogProfileComponent },
     { path: 'profile/list/games/:listId', component: ListGamesComponent },

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { PaginationService } from '../../services/pagination.service';
@@ -33,4 +33,15 @@ export class LandingSearchComponent {
     this.paginat.setOffset(offset);
       this.searchGame(game);
     }
+
+    @HostListener('document:keydown.enter', ['$event'])
+  handleEnterKey(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      // Navegar a la URL deseada utilizando el término de búsqueda
+      let searchTerm : string = (<HTMLInputElement>document.getElementById("search-landing")).value; 
+      console.log(searchTerm+"AAAAAAAAAAAA")
+      this.router.navigate(['/search/', searchTerm]);
+      
+    }
+  }
 }

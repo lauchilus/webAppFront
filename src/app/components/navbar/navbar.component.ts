@@ -39,7 +39,8 @@ export class NavbarComponent implements OnInit {
   }
 
   goToProfile(){
-    if(this.authService.isLogged()){
+    if(this.authService.isLogged() && localStorage.getItem('UID') !== null){
+
       this.router.navigateByUrl(`/profile/${localStorage.getItem('UID')}`)
     }else{
       alert("Please Login");

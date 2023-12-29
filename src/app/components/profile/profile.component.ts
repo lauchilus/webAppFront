@@ -130,6 +130,7 @@ export class ProfileComponent implements OnInit {
     },
     error => {
       console.error('Error updating profile:', error);
+      alert("An error has ocurred. Try again!")
     }
   );
   }

@@ -108,7 +108,8 @@ export class GameDetailsComponent implements OnInit {
           alert("Game added to plated!")
         },
           (error) => {
-            console.error('Error adding game:', error);
+            alert("Please Sign in");
+            this.router.navigateByUrl("/login");
           }
         );
     } else {
@@ -128,7 +129,8 @@ export class GameDetailsComponent implements OnInit {
           alert("Game added to plated!")
         },
           (error) => {
-            console.error('Error adding game:', error);
+            alert("Please Sign in");
+            this.router.navigateByUrl("/login");
           }
         );
     } else {
@@ -148,7 +150,8 @@ export class GameDetailsComponent implements OnInit {
           alert("Game added to Favorites!")
         },
           (error) => {
-            console.error('Error adding game:', error);
+            alert("Please Sign in");
+            this.router.navigateByUrl("/login");
           }
         );
     } else {

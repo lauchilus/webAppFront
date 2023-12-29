@@ -76,7 +76,11 @@ export class PopupListComponent {
       console.log(this.formImage);
       this.closePopup();
       alert("List Created!")
-    });
+    },(error) => {
+      alert("Please Sign in");
+      
+    }
+    );
     console.log(this.myform.value);
     console.log(this.inputData);
   }
@@ -101,7 +105,11 @@ export class PopupListComponent {
       console.log(this.formImage)
       this.closePopup();
       alert("Game added!")
-    });
+    },(error) => {
+      alert("Please Sign in");
+      
+    }
+    );
   }
 
   activateCreateView() {

@@ -8,7 +8,7 @@ import { Gameslist } from '../models/gameslist';
 })
 export class GamesSearchServiceService {
   
-  baseUrlSearchGames: string = 'http://localhost:8080/games/a/';
+  baseUrlSearchGames: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/games/a/';
 
   constructor(private pagination: PaginationService, httpClient:HttpClient){}
 

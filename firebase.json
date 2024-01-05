@@ -1,0 +1,15 @@
+{
+  "hosting": {
+    "site": "gamelist-2d76b",
+    "public": "/dist/gamelist-front",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [{
+      "source": "**",
+      "destination": "/index.html"
+    }]
+  }
+}

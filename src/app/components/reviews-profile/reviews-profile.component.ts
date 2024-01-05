@@ -23,7 +23,7 @@ export class ReviewsProfileComponent {
   }
 
   fetchDataPlayed() {
-    this.httpClient.get(`http://localhost:8080/reviews?userId=${this.userId}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews?userId=${this.userId}`)
       .subscribe((data: any) => {
         console.log(data);
 

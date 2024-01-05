@@ -32,7 +32,7 @@ export class SearchGameComponent implements OnInit {
   }
 
   fetchDataList(game: string) {
-    this.httpClient.get(`http://localhost:8080/games/a/${game}?offset=`+this.offset)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/games/a/${game}?offset=`+this.offset)
       .subscribe((data: any) => {
         console.log(data);
 

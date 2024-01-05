@@ -45,7 +45,7 @@ export class PopupReviewComponent implements OnInit {
 
 
 
-  baseUrl: string = 'http://localhost:8080/reviews';
+  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews';
 
   AddReview() {
     const reviewpost: ReviewPost = {

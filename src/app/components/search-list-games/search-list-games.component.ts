@@ -18,7 +18,7 @@ export class SearchListGamesComponent implements OnInit {
 
 
   listGames : Gameslist[] = [];
-  baseUrl: string = 'http://localhost:8080/games?offset=';
+  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/games?offset=';
   offset: number = 0;
  
 
@@ -34,7 +34,7 @@ export class SearchListGamesComponent implements OnInit {
 
   fetchDataList(offset: number) {
     this.offset = this.paginat.getOffset();
-    this.httpClient.get(`http://localhost:8080/games?offset=${offset}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/games?offset=${offset}`)
       .subscribe((data: any) => {
         console.log(data);
 

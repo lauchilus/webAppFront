@@ -14,7 +14,7 @@ export class AuthService {
   loggedIn = false;
   private _miVariable = new BehaviorSubject<boolean>(false);
 
-  UrlRegisterback: string = `http://localhost:8080/auth/register`
+  UrlRegisterback: string = `http://ec2-52-200-236-21.compute-1.amazonaws.com/auth/register`
 
   firebaseConfig = {
     apiKey: "AIzaSyBrUuNI_JjJngqir_fbymc1YL7OECJyx6g",
@@ -35,7 +35,7 @@ export class AuthService {
 
    
 checkUser(email: string, username: string){
-  const urlCheck = `http://localhost:8080/auth/verifyuser?username=${username}&email=${email}`;
+  const urlCheck = `http://ec2-52-200-236-21.compute-1.amazonaws.com/auth/verifyuser?username=${username}&email=${email}`;
 
   // Retornar el observable resultante de la petición HTTP
   return this.httpClient.get<boolean>(urlCheck);

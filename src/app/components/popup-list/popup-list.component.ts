@@ -65,7 +65,7 @@ export class PopupListComponent {
 
 
 
-  baseUrl: string = 'http://localhost:8080/list?';
+  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/list?';
 
   createList() {
     const url = this.baseUrl + "userID=" + this.inputData.userId + "&name=" + this.myform.value.name;
@@ -96,7 +96,7 @@ export class PopupListComponent {
   }
 
   addToList(game: number) {
-    const url = `http://localhost:8080/list/addGame?userID=${localStorage.getItem('UID')}&gameID=${this.data.gameId}&collectionID=${this.selected}`
+    const url = `http://ec2-52-200-236-21.compute-1.amazonaws.com/list/addGame?userID=${localStorage.getItem('UID')}&gameID=${this.data.gameId}&collectionID=${this.selected}`
 
     console.log("SELECTED: " + this.selected, " GAME ID: " + this.gameId)
 
@@ -126,7 +126,7 @@ export class PopupListComponent {
   }
 
   fetchDataListUser() {
-    this.httpClient.get(`http://localhost:8080/list?userID=${this.userId}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/list?userID=${this.userId}`)
       .subscribe((data: any) => {
         this.listUser = data.map((game: List) => {
           return {

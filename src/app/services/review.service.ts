@@ -7,7 +7,7 @@ import { ReviewPost } from '../models/review-post';
   providedIn: 'root'
 })
 export class ReviewService {
-  baseUrl: string = 'http://localhost:8080/reviews';
+  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews';
 
   constructor(private httpClient: HttpClient) { }
 

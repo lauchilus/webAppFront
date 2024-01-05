@@ -31,7 +31,7 @@ export class BacklogProfileComponent implements OnInit {
   }
 
   fetchDataList() {
-    this.httpClient.get(`http://localhost:8080/backlog?userId=${localStorage.getItem('UID')}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/backlog?userId=${localStorage.getItem('UID')}`)
       .subscribe((data: any) => {
         console.log(data);
 

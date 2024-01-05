@@ -43,7 +43,7 @@ export class GameDetailsComponent implements OnInit {
 
 
   fetchDataGame(game: number) {
-    this.httpClient.get(`http://localhost:8080/games/details?id=` + game)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/games/details?id=` + game)
       .subscribe((data: any) => {
         console.log(data);
         this.gameDetails = data;
@@ -100,7 +100,7 @@ export class GameDetailsComponent implements OnInit {
 
   AddToPlayed() {
     if (this.authService.isLogged()) {
-      this.httpClient.post(`http://localhost:8080/played?user=` + localStorage.getItem("UID") + "&gameID=" + this.gameDetails.id, null, { headers: this.headers })
+      this.httpClient.post(`http://ec2-52-200-236-21.compute-1.amazonaws.com/played?user=` + localStorage.getItem("UID") + "&gameID=" + this.gameDetails.id, null, { headers: this.headers })
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;
@@ -121,7 +121,7 @@ export class GameDetailsComponent implements OnInit {
 
   AddToBacklog() {
     if (this.authService.isLogged()) {
-      this.httpClient.post(`http://localhost:8080/backlog?user=` + localStorage.getItem("UID") + "&gameId=" + this.gameDetails.id, null, { headers: this.headers })
+      this.httpClient.post(`http://ec2-52-200-236-21.compute-1.amazonaws.com/backlog?user=` + localStorage.getItem("UID") + "&gameId=" + this.gameDetails.id, null, { headers: this.headers })
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;
@@ -142,7 +142,7 @@ export class GameDetailsComponent implements OnInit {
 
   AddToFavorites() {
     if (this.authService.isLogged()) {
-      this.httpClient.post(`http://localhost:8080/favorite?userId=` + localStorage.getItem('UID') + "&gameId=" + this.gameDetails.id, null, { headers: this.headers })
+      this.httpClient.post(`http://ec2-52-200-236-21.compute-1.amazonaws.com/favorite?userId=` + localStorage.getItem('UID') + "&gameId=" + this.gameDetails.id, null, { headers: this.headers })
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;

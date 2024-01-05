@@ -23,7 +23,7 @@ export class ReviewDetailsComponent implements OnInit {
   }
 
   fetchDataPlayed() {
-    this.httpClient.get(`http://localhost:8080/reviews/${this.id}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews/${this.id}`)
       .subscribe((data: any) => {
         console.log(data);
 

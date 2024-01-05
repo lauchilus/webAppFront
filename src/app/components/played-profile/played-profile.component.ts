@@ -26,7 +26,7 @@ export class PlayedProfileComponent implements OnInit{
   }
 
   fetchDataPlayed(page : number) {
-    this.httpClient.get(`http://localhost:8080/played/${this.userId}?page=${page}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/played/${this.userId}?page=${page}`)
       .subscribe((data: any) => {
         console.log(data);
 

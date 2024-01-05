@@ -32,7 +32,7 @@ export class ListGamesComponent implements OnInit {
   }
 
   fetchDataPlayed(list: List) {
-    this.httpClient.get(`http://localhost:8080/list/games?collectionID=${this.list}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/list/games?collectionID=${this.list}`)
       .subscribe((data: any) => {
         console.log(data);
 

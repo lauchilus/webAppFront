@@ -32,7 +32,7 @@ export class ListsProfileComponent implements OnInit {
   }
 
   fetchDataPlayed() {
-    this.httpClient.get(`http://localhost:8080/list?userID=${this.userId}`)
+    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/list?userID=${this.userId}`)
       .subscribe((data: any) => {
         console.log(data);
 

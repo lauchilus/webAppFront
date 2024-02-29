@@ -23,7 +23,7 @@
 }@else if(add && !create && !select) {
     <mat-form-field>
         <mat-label>Select a list </mat-label>
-        <mat-select [(value)]="selected">
+        <mat-select [(value)]= "selected">
             <mat-option>None</mat-option>
             @for (item of listUser; track item.id) {
                 <mat-option value={{item.id}}>{{item.name}}</mat-option>
@@ -33,5 +33,8 @@
       
       <button (click)="addToList(gameId)" mat-raised-button class='inline-flex text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg'>Add</button>
 }
+@if (showAlert) {
+    <app-alert [msg]="configAlert.msg" [status]="configAlert.status" [state]="configAlert.state" (close)="CloseAlert()"></app-alert>
+  }
 
     

@@ -13,7 +13,7 @@ export class AlertComponent implements OnInit {
   @Input() state: 'success' | 'error' = 'success';
   @Input() autoClose: boolean = true;
   @Input() closeTime: number = 5000; 
-  @Input() status : HttpStatusCode = 200;
+  @Input() status : HttpStatusCode = 201;
 
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 

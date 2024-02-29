@@ -15,6 +15,7 @@ import { FavoritesService } from '../../services/favorites.service';
 import { BacklogService } from '../../services/backlog.service';
 import { PlayedService } from '../../services/played.service';
 import { AlertComponent } from '../alert/alert.component';
+import { ConfigAlert } from '../../models/ConfigAlert';
 
 
 @Component({
@@ -30,6 +31,11 @@ import { AlertComponent } from '../alert/alert.component';
 export class GameDetailsComponent implements OnInit {
 
   showAlert = false;
+  configAlert : ConfigAlert = {
+    msg: '',
+    status: HttpStatusCode.Accepted,
+    state: 'success'
+  };
 
   private headers!: HttpHeaders;
 
@@ -50,6 +56,10 @@ export class GameDetailsComponent implements OnInit {
 
   ShowAlert(){
     this.showAlert = true;
+  }
+
+  CloseAlert(){
+    this.showAlert = false;
   }
 
 
@@ -81,14 +91,7 @@ export class GameDetailsComponent implements OnInit {
           gameId: this.gameDetails.id,
           name: this.gameDetails.name,
         }
-      })
-      popup.afterClosed().subscribe(item => {
-        console.log(item);
-      })
-    } else {
-      alert("Please Sign in");
-      this.router.navigateByUrl("/login");
-    }
+      })};
   }
 
   OpenPopUpList() {
@@ -99,14 +102,7 @@ export class GameDetailsComponent implements OnInit {
           userId: localStorage.getItem('UID'),
           gameId: this.gameDetails.id
         }
-      })
-      popup.afterClosed().subscribe(item => {
-        console.log(item);
-      })
-    } else {
-      alert("Please Sign in");
-      this.router.navigateByUrl("/login");
-    }
+      })};
   }
 
   AddToPlayed() {
@@ -114,21 +110,36 @@ export class GameDetailsComponent implements OnInit {
     if (this.authService.isLogged() && userId!=null) {
       this.playedService.PostPLayed(userId,this.gameDetails.id)
         .subscribe((data: any) => {
-          console.log(data);
           this.gameDetails = data;
-          this.ngOnInit();
+          this.CreateConfigAlert("Added to played successfully!",data.HttpStatusCode,"success")
           this.ShowAlert();
+          
+          this.ngOnInit()
         },
           (error) => {
-            alert("Please Sign in");
+            if(error.HttpStatusCode === 401){
+              this.CreateConfigAlert("Please Sign in!",error.HttpStatusCode,"error")
+              this.ShowAlert();
+
             this.router.navigateByUrl("/login");
+            }else{
+              this.CreateConfigAlert(error.error.msg,error.HttpStatusCode,"error")
+              this.ShowAlert();
+            }
+            
           }
         );
-    } else {
-      alert("Please Sign in");
-      this.router.navigateByUrl("/login");
+    } 
+  }
+
+  CreateConfigAlert(msg:string, status : HttpStatusCode, state : "error" | "success"){
+    const config : ConfigAlert = {
+      msg,
+      status,
+      state
     }
 
+    this.configAlert = config;
   }
 
   AddToBacklog() {
@@ -138,14 +149,25 @@ export class GameDetailsComponent implements OnInit {
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;
-          this.ngOnInit();
-          alert("Game added to backlog!")
+          this.CreateConfigAlert("Added to backlog successfully!",data.HttpStatusCode,"success")
+          this.ShowAlert();
+          
+          this.ngOnInit()
         },
-          (error) => {
-            alert("Please Sign in");
-            this.router.navigateByUrl("/login");
+        (error) => {
+          console.log(error)
+          if(error.HttpStatusCode === 401){
+            this.CreateConfigAlert("Please Sign in!",error.HttpStatusCode,"error")
+            this.ShowAlert();
+
+          this.router.navigateByUrl("/login");
+          }else{
+            this.CreateConfigAlert(error.error.msg,error.HttpStatusCode,"error")
+            this.ShowAlert();
           }
-        );
+          
+        }
+      );
     } 
     
 
@@ -158,18 +180,24 @@ export class GameDetailsComponent implements OnInit {
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;
-          this.ngOnInit();
-          alert("Game added to Favorites!")
+          this.CreateConfigAlert("Added to favorites successfully!",data.HttpStatusCode,"success")
+          this.ShowAlert();
+          this.ngOnInit()
         },
-          (error) => {
-            alert("Please Sign in");
-            this.router.navigateByUrl("/login");
+        (error) => {
+          if(error.HttpStatusCode === 401){
+            this.CreateConfigAlert("Please Sign in!",error.HttpStatusCode,"error")
+            this.ShowAlert();
+
+          this.router.navigateByUrl("/login");
+          }else{
+            this.CreateConfigAlert(error.error.msg,error.HttpStatusCode,"error")
+            this.ShowAlert();
           }
-        );
-    } else {
-      alert("Please Sign in");
-      this.router.navigateByUrl("/login");
-    }
+          
+        }
+      )};
   }
 
 }
+

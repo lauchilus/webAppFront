@@ -22,6 +22,7 @@
     "@angular/router": "^17.0.0",
     "firebase": "^10.7.1",
     "igniteui-webcomponents": "^4.6.0",
+    "ng-alert-box-popup": "^0.0.11",
     "primeng": "^17.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

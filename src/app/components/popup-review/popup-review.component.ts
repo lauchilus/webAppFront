@@ -5,19 +5,27 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReviewService } from '../../services/review.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Review } from '../../models/review';
 import { ReviewPost } from '../../models/review-post';
+import { AlertComponent } from '../alert/alert.component';
+import { ConfigAlert } from '../../models/ConfigAlert';
 
 @Component({
   selector: 'app-popup-review',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule,AlertComponent],
   templateUrl: './popup-review.component.html',
   styleUrl: './popup-review.component.css'
 })
 export class PopupReviewComponent implements OnInit {
 
+  showAlert = false;
+  configAlert : ConfigAlert = {
+    msg: '',
+    status: HttpStatusCode.Accepted,
+    state: 'success'
+  };
   inputData: any;
 
   headers: HttpHeaders;
@@ -52,15 +60,40 @@ export class PopupReviewComponent implements OnInit {
     };
     this.reviewService.PostReview(reviewpost).subscribe(res => {
       console.log(res);
-      alert("Review Added!")
-    }, 
-    (error) => {
-      alert("Please Sign in");      
+      this.CreateConfigAlert("Game added to list successfully!", res.HttpStatusCode, "success")
+      this.ShowAlert();
+      this.closePopup();
+    }, (error) => {
+      console.log(error)
+      if (error.HttpStatusCode === 401) {
+
+        this.CreateConfigAlert("Please Sign in!", error.HttpStatusCode, "error")
+        this.ShowAlert();
+        this.closePopup();
+      } else if(error.HttpStatusCode == 201) {
+        this.CreateConfigAlert("Game added to list successfully!", error.HttpStatusCode, "success")
+        this.ShowAlert();
+        this.closePopup();
+      }
+    }
+    );
+  }
+
+  ShowAlert() {
+    this.showAlert = true;
+  }
+
+  CloseAlert() {
+    this.showAlert = false;
+  }
+
+  CreateConfigAlert(msg: string, status: HttpStatusCode, state: "error" | "success") {
+    const config: ConfigAlert = {
+      msg,
+      status,
+      state
     }
 
-    );
-    this.closePopup();
-    console.log(this.myform.value);
-    console.log(this.inputData);
+    this.configAlert = config;
   }
 }

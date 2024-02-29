@@ -23,22 +23,7 @@ export const loggerInterceptor: HttpInterceptorFn = (
     }
   })
 
-  return next(req).pipe(
-    catchError(error => {
-      let errorMessage = '';
-      if (error instanceof ErrorEvent) {
-        // client-side error
-        errorMessage = `Client-side error: ${error.error.message}`;
-      } else {
-        // backend error
-        errorMessage = `Server-side error: ${error.status} ${error.message}`;
-      }
-      
-      // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
-      alert(errorMessage);
-      return throwError(errorMessage);
-    })
-  );
+  return next(req);
 }
 
 

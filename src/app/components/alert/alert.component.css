@@ -1,0 +1,23 @@
+.alerta-overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  }
+
+  :host {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 16px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+    color: #fff; /* Color del texto, ajusta según necesidades */
+    padding: 10px;
+    border-radius: 8px; /* Bordes redondeados, ajusta según necesidades */
+  }

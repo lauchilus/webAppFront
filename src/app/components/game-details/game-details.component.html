@@ -24,7 +24,12 @@
       </div>
     </div>
   </section>
+  
+  
 
 </div>
-@if (showAlert) {
-}
+<div>
+    @if (showAlert) {
+    <app-alert [msg]="configAlert.msg" [status]="configAlert.status" [state]="configAlert.state" (close)="CloseAlert()"></app-alert>
+  }
+  </div>

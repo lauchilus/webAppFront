@@ -18,7 +18,8 @@ export const loggerInterceptor: HttpInterceptorFn = (
 
   req = req.clone({
     setHeaders: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      uid : `${localStorage.getItem("uid")}`
     }
   })
 

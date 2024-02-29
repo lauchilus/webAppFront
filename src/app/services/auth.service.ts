@@ -14,7 +14,7 @@ export class AuthService {
   loggedIn = false;
   private _miVariable = new BehaviorSubject<boolean>(false);
 
-  UrlRegisterback: string = `http://ec2-52-200-236-21.compute-1.amazonaws.com/auth/register`
+  baseUrl: string = `http://localhost:8080/auth`
 
   firebaseConfig = {
     apiKey: "AIzaSyBrUuNI_JjJngqir_fbymc1YL7OECJyx6g",
@@ -35,7 +35,7 @@ export class AuthService {
 
    
 checkUser(email: string, username: string){
-  const urlCheck = `http://ec2-52-200-236-21.compute-1.amazonaws.com/auth/verifyuser?username=${username}&email=${email}`;
+  const urlCheck = `${this.baseUrl}/verifyuser?username=${username}&email=${email}`;
 
   // Retornar el observable resultante de la petición HTTP
   return this.httpClient.get<boolean>(urlCheck);
@@ -81,7 +81,7 @@ SaveUserDB(UID: string, email: string, username: string) {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     }),
   };
-  this.httpClient.post(this.UrlRegisterback, registerData, httpOptions).subscribe(
+  this.httpClient.post(`${this.baseUrl}/register`, registerData, httpOptions).subscribe(
     response => console.log('Solicitud exitosa', response),
     error => console.error('Error en la solicitud', error)
   );;
@@ -130,4 +130,30 @@ isLogged(){
   console.log(this._miVariable)
   return this._miVariable.asObservable();
 }
+
+async renewToken(): Promise<void> {
+  try {
+    const user = this.auth.currentUser;
+    if (user) {
+      const newToken = await user.getIdToken(true);
+      this.setToken(newToken);
+    }
+  } catch (error) {
+    console.error('Error renovando el token:', error);
+    // Manejar el error según tus necesidades
+  }
+}
+
+getToken(): string | null {
+  return localStorage.getItem('token');
+}
+
+setToken(token: string): void {
+  localStorage.setItem('token', token);
+}
+
+removeToken(): void {
+  localStorage.removeItem('token');
+}
+
 }

@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PaginationService } from '../../services/pagination.service';
+import { PlayedService } from '../../services/played.service';
 
 @Component({
   selector: 'app-played-profile',
@@ -19,14 +20,15 @@ export class PlayedProfileComponent implements OnInit{
   playedList : Played[] = [];
   page : number = 0;
   
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute,private paginat: PaginationService) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute,private paginat: PaginationService,private playedService: PlayedService) {}
   ngOnInit(): void {
     this.page = this.paginat.getOffset();
     this.fetchDataPlayed(this.page);
   }
 
   fetchDataPlayed(page : number) {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/played/${this.userId}?page=${page}`)
+    if(this.userId!=null){
+      this.playedService.fetchDataPlayed(this.userId,page)
       .subscribe((data: any) => {
         console.log(data);
 
@@ -41,6 +43,8 @@ export class PlayedProfileComponent implements OnInit{
           ;
         });
       });
+    }
+    
   }
 
   getSafeImageUrl(url: string): any {

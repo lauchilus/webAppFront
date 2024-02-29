@@ -18,13 +18,13 @@ export class SearchListGamesComponent implements OnInit {
 
 
   listGames : Gameslist[] = [];
-  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/games?offset=';
   offset: number = 0;
  
 
  
   
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private paginat: PaginationService) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private paginat: PaginationService,
+    private searchService: GamesSearchServiceService) {}
 
   ngOnInit(): void {
     this.offset = this.paginat.getOffset();
@@ -34,7 +34,7 @@ export class SearchListGamesComponent implements OnInit {
 
   fetchDataList(offset: number) {
     this.offset = this.paginat.getOffset();
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/games?offset=${offset}`)
+    this.searchService.fetchDataList(this.offset)
       .subscribe((data: any) => {
         console.log(data);
 

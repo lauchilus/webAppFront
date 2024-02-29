@@ -12,9 +12,11 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { BacklogProfileComponent } from './components/backlog-profile/backlog-profile.component';
 import { ReviewDetailsComponent } from './components/review-details/review-details.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 export const routes: Routes = [
     { path: 'home', component: LandingSearchComponent },
+    { path: 'alert', component: AlertComponent },
     { path: 'register', component: RegisterComponent },    
     { path: 'login', component: LoginComponent },
     { path: 'details/:id', component: GameDetailsComponent },

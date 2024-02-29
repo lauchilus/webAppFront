@@ -10,6 +10,7 @@ import { Review } from '../../models/review';
 import { ReviewPost } from '../../models/review-post';
 import { List } from '../../models/list';
 import { ActivatedRoute } from '@angular/router';
+import { ListService } from '../../services/list.service';
 
 @Component({
   selector: 'app-popup-list',
@@ -39,7 +40,7 @@ export class PopupListComponent {
 
   headers !: HttpHeaders;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopupListComponent>, private form: MatFormFieldModule, private buildr: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopupListComponent>, private form: MatFormFieldModule, private buildr: FormBuilder, private httpClient: HttpClient, private route: ActivatedRoute,private listService: ListService) {
     this.headers = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
@@ -64,25 +65,24 @@ export class PopupListComponent {
   });
 
 
-
-  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/list?';
-
   createList() {
-    const url = this.baseUrl + "userID=" + this.inputData.userId + "&name=" + this.myform.value.name;
-    
-    console.log("AAAAA"+this.formImage.has('image'))
-    this.httpClient.post<any>(url, this.formImage, {headers:this.headers}).subscribe(res => {
-      console.log(res);
-      console.log(this.formImage);
-      this.closePopup();
-      alert("List Created!")
-    },(error) => {
-      alert("Please Sign in");
-      
+    if(this.userId!=null){
+      const body = {
+        name : this.myform.get("name")?.value,
+        image : this.formImage.get('image')
+
+      }
+      this.listService.createList(this.userId,body,this.formImage.get('image') as File).subscribe(res => {
+        console.log(res);
+        console.log(this.formImage);
+        this.closePopup();
+        alert("List Created!")
+      },(error) => {
+        alert("Please Sign in");
+        
+      }
+      );
     }
-    );
-    console.log(this.myform.value);
-    console.log(this.inputData);
   }
 
   onFileSelected(event: any) {
@@ -96,15 +96,11 @@ export class PopupListComponent {
   }
 
   addToList(game: number) {
-    const url = `http://ec2-52-200-236-21.compute-1.amazonaws.com/list/addGame?userID=${localStorage.getItem('UID')}&gameID=${this.data.gameId}&collectionID=${this.selected}`
-
-    console.log("SELECTED: " + this.selected, " GAME ID: " + this.gameId)
-
-    this.httpClient.post<any>(url, null,{headers: this.headers}).subscribe(res => {
-      console.log(res);
-      console.log(this.formImage)
-      this.closePopup();
+    
+    this.listService.addGameToList(this.inputData.gameId,this.selected).subscribe(res => {
+      
       alert("Game added!")
+      this.closePopup();
     },(error) => {
       alert("Please Sign in");
       
@@ -126,7 +122,8 @@ export class PopupListComponent {
   }
 
   fetchDataListUser() {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/list?userID=${this.userId}`)
+    if(this.userId!=null){
+      this.listService.fetchUserLists(this.userId)
       .subscribe((data: any) => {
         this.listUser = data.map((game: List) => {
           return {
@@ -137,5 +134,7 @@ export class PopupListComponent {
             ;
         });
       });
+    }
+    
   }
 }

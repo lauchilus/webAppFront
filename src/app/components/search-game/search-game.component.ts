@@ -5,6 +5,7 @@ import { PaginationService } from '../../services/pagination.service';
 import { Gameslist } from '../../models/gameslist';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { GamesSearchServiceService } from '../../services/games-search-service.service';
 
 @Component({
   selector: 'app-search-game',
@@ -21,19 +22,22 @@ export class SearchGameComponent implements OnInit {
 
  
   
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private paginat: PaginationService,private route: ActivatedRoute) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private paginat: PaginationService,private route: ActivatedRoute,private searchService: GamesSearchServiceService) {}
 
     ngOnInit(): void {
-      const game = this.route.snapshot.params['game'];
-      console.log(game+"aaaa")
-      this.fetchDataList(game);
+      
+      this.route.params.subscribe(params =>{
+        const game = this.route.snapshot.params['game'];
+        this.fetchDataListSearch(game);
+
+      })
+      
       this.offset = this.paginat.getOffset()
       
   }
 
-  fetchDataList(game: string) {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/games/a/${game}?offset=`+this.offset)
-      .subscribe((data: any) => {
+  fetchDataListSearch(game: string) {
+    this.searchService.fetchDataListSearch(game,this.offset).subscribe((data: any) => {
         console.log(data);
 
         this.listGames = data.map((games: any) => {
@@ -53,13 +57,16 @@ export class SearchGameComponent implements OnInit {
     const game = this.route.snapshot.params['game'];
     const offset = this.paginat.getOffset() + 12;
     this.paginat.setOffset(offset);
-    this.fetchDataList(game);
+    console.log(this.offset)
+    this.offset+=12;
+    console.log(this.offset)
+    this.fetchDataListSearch(game);
     }
     previousPagination() {
       const game = this.route.snapshot.params['game'];
-      const offset = Math.max(0, this.paginat.getOffset() - 12);
+      const offset = Math.max(0, this.offset - 12);
     this.paginat.setOffset(offset);
-      this.fetchDataList(game);
+      this.fetchDataListSearch(game);
     }
 
  

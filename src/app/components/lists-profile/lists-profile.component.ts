@@ -10,6 +10,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PopupReviewComponent } from '../popup-review/popup-review.component';
 import { PopupListComponent } from '../popup-list/popup-list.component';
+import { ListService } from '../../services/list.service';
 
 @Component({
   selector: 'app-lists-profile',
@@ -25,14 +26,15 @@ export class ListsProfileComponent implements OnInit {
   listsUser !: List[]
   userId = localStorage.getItem("UID"); ;
 
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private router: ActivatedRoute,private authService:AuthService,private dialog: MatDialog,private route: Router) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private router: ActivatedRoute,private authService:AuthService,private dialog: MatDialog,private route: Router,private listService:ListService) {}
 
   ngOnInit(): void {
     this.fetchDataPlayed();
   }
 
   fetchDataPlayed() {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/list?userID=${this.userId}`)
+    if(this.userId!=null){
+      this.listService.fetchUserLists(this.userId)
       .subscribe((data: any) => {
         console.log(data);
 
@@ -47,6 +49,8 @@ export class ListsProfileComponent implements OnInit {
           ;
         });
       });
+    }
+    
   }
 
   createList() {

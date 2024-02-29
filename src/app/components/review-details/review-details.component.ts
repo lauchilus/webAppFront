@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Review } from '../../models/review';
 import { CommonModule } from '@angular/common';
+import { ReviewService } from '../../services/review.service';
 
 @Component({
   selector: 'app-review-details',
@@ -13,17 +14,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './review-details.component.css'
 })
 export class ReviewDetailsComponent implements OnInit {
-  id !: number;
+  id !: string;
   reviews !: any;
   
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute, private reviewService: ReviewService) {}
   ngOnInit(): void {
     this.id = this.route.snapshot.params['reviewId']
     this.fetchDataPlayed();
   }
 
   fetchDataPlayed() {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews/${this.id}`)
+    this.reviewService.GetReviewsForProfileDisplay(this.id)
       .subscribe((data: any) => {
         console.log(data);
 

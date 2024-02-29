@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { GameDetails } from '../../models/game-details';
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule, MatFormField } from "@angular/material/form-field";
@@ -10,12 +10,17 @@ import { PopupListComponent } from '../popup-list/popup-list.component';
 import { Observable } from 'rxjs';
 import { loggerInterceptor } from '../../logger.interceptor';
 import { AuthService } from '../../services/auth.service';
+import { GamesSearchServiceService } from '../../services/games-search-service.service';
+import { FavoritesService } from '../../services/favorites.service';
+import { BacklogService } from '../../services/backlog.service';
+import { PlayedService } from '../../services/played.service';
+import { AlertComponent } from '../alert/alert.component';
 
 
 @Component({
   selector: 'app-game-details',
   standalone: true,
-  imports: [HttpClientModule, MatFormFieldModule, MatDialogModule,],
+  imports: [HttpClientModule, MatFormFieldModule, MatDialogModule,AlertComponent],
   templateUrl: './game-details.component.html',
   styleUrl: './game-details.component.css',
 
@@ -24,11 +29,13 @@ import { AuthService } from '../../services/auth.service';
 
 export class GameDetailsComponent implements OnInit {
 
+  showAlert = false;
+
   private headers!: HttpHeaders;
 
   gameDetails!: GameDetails;
   httpClient = inject(HttpClient)
-  constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private dialog: MatDialog, private authService: AuthService, private router: Router) {
+  constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private dialog: MatDialog, private authService: AuthService, private router: Router, private searchService: GamesSearchServiceService,private favoritesService: FavoritesService,private backlogService: BacklogService,private playedService: PlayedService) {
     this.headers = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
@@ -41,9 +48,13 @@ export class GameDetailsComponent implements OnInit {
 
   }
 
+  ShowAlert(){
+    this.showAlert = true;
+  }
+
 
   fetchDataGame(game: number) {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/games/details?id=` + game)
+    this.searchService.getGameDetails(game)
       .subscribe((data: any) => {
         console.log(data);
         this.gameDetails = data;
@@ -99,13 +110,14 @@ export class GameDetailsComponent implements OnInit {
   }
 
   AddToPlayed() {
-    if (this.authService.isLogged()) {
-      this.httpClient.post(`http://ec2-52-200-236-21.compute-1.amazonaws.com/played?user=` + localStorage.getItem("UID") + "&gameID=" + this.gameDetails.id, null, { headers: this.headers })
+    const userId = localStorage.getItem("UID")
+    if (this.authService.isLogged() && userId!=null) {
+      this.playedService.PostPLayed(userId,this.gameDetails.id)
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;
           this.ngOnInit();
-          alert("Game added to plated!")
+          this.ShowAlert();
         },
           (error) => {
             alert("Please Sign in");
@@ -120,29 +132,29 @@ export class GameDetailsComponent implements OnInit {
   }
 
   AddToBacklog() {
-    if (this.authService.isLogged()) {
-      this.httpClient.post(`http://ec2-52-200-236-21.compute-1.amazonaws.com/backlog?user=` + localStorage.getItem("UID") + "&gameId=" + this.gameDetails.id, null, { headers: this.headers })
+    const userId = localStorage.getItem("UID")
+    if (this.authService.isLogged() && userId!=null) {
+      this.backlogService.PostBacklog(userId,this.gameDetails.id)
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;
           this.ngOnInit();
-          alert("Game added to plated!")
+          alert("Game added to backlog!")
         },
           (error) => {
             alert("Please Sign in");
             this.router.navigateByUrl("/login");
           }
         );
-    } else {
-      alert("Please Sign in");
-      this.router.navigateByUrl("/login");
-    }
+    } 
+    
 
   }
 
   AddToFavorites() {
-    if (this.authService.isLogged()) {
-      this.httpClient.post(`http://ec2-52-200-236-21.compute-1.amazonaws.com/favorite?userId=` + localStorage.getItem('UID') + "&gameId=" + this.gameDetails.id, null, { headers: this.headers })
+    const userId = localStorage.getItem("UID")
+    if (this.authService.isLogged() && userId!=null) {
+      this.favoritesService.PostFavorite(userId,this.gameDetails.id)
         .subscribe((data: any) => {
           console.log(data);
           this.gameDetails = data;

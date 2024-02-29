@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListInformation } from '../../services/list-information';
 import { CommonModule } from '@angular/common';
+import { ListService } from '../../services/list.service';
 
 @Component({
   selector: 'app-list-games',
@@ -20,7 +21,7 @@ export class ListGamesComponent implements OnInit {
   list !: any;
   listGames !: Gameslist[];
 
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: Router, private listInfo: ListInformation, private router: ActivatedRoute) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: Router, private listInfo: ListInformation, private router: ActivatedRoute,private listService: ListService) {}
 
   ngOnInit(): void {
     
@@ -32,7 +33,8 @@ export class ListGamesComponent implements OnInit {
   }
 
   fetchDataPlayed(list: List) {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/list/games?collectionID=${this.list}`)
+    
+    this.listService.fetchUserListGames(this.list)
       .subscribe((data: any) => {
         console.log(data);
 

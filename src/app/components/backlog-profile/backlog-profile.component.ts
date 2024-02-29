@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Gameslist } from '../../models/gameslist';
 import { PaginationService } from '../../services/pagination.service';
+import { BacklogService } from '../../services/backlog.service';
 
 @Component({
   selector: 'app-backlog-profile',
@@ -21,7 +22,7 @@ export class BacklogProfileComponent implements OnInit {
 
  
   
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private paginat: PaginationService,private route: ActivatedRoute) {}
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer,private paginat: PaginationService,private route: ActivatedRoute,private backlogService: BacklogService) {}
 
     ngOnInit(): void {
       console.log("aaaa")
@@ -31,7 +32,9 @@ export class BacklogProfileComponent implements OnInit {
   }
 
   fetchDataList() {
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/backlog?userId=${localStorage.getItem('UID')}`)
+    const userId = localStorage.getItem('UID')
+    if(userId!=null){
+      this.backlogService.GetAllBacklogs(userId)
       .subscribe((data: any) => {
         console.log(data);
 
@@ -42,6 +45,8 @@ export class BacklogProfileComponent implements OnInit {
           };
         });
       });
+    }
+    
   }
 
   getSafeImageUrl(url: string): any {

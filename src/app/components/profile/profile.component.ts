@@ -8,6 +8,9 @@ import { Review } from '../../models/review';
 import { Favorite } from '../../models/favorite';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProfileService } from '../../services/profile.service';
+import { ReviewService } from '../../services/review.service';
+import { FavoritesService } from '../../services/favorites.service';
 
 @Component({
   selector: 'app-profile',
@@ -42,7 +45,7 @@ export class ProfileComponent implements OnInit {
   headers!: HttpHeaders
 
 
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute, private form: MatFormFieldModule, private buildr: FormBuilder) { }
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute, private form: MatFormFieldModule, private buildr: FormBuilder, private profileService : ProfileService,private reviewService: ReviewService,private favoritesService : FavoritesService) { }
   ngOnInit(): void {
     this.fetchDataFavorites();
     this.fetchDataReviews();
@@ -57,18 +60,23 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchDataUser(){
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/user?id=${this.userId}`).subscribe(
+    if(this.userId != null){
+      this.profileService.fetchDataUser(this.userId).subscribe(
       (data: any) =>{
         this.username = data.username;
         this.bio = data.bio;
         this.profilePic = data.imageUrl;
       }
     )
+    }else{
+      alert("please login");
+    }
+    
   }
 
   fetchDataFavorites() {
-
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/favorite/profile?userId=${this.userId}`)
+    if(this.userId!=null){
+      this.favoritesService.fetchDataFavoritesProfile(this.userId)
       .subscribe((data: any) => {
         console.log(data);
 
@@ -83,11 +91,14 @@ export class ProfileComponent implements OnInit {
             ;
         });
       });
+    }
+
+    
   }
 
   fetchDataReviews() {
-
-    this.httpClient.get(`http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews/profile?userId=${this.userId}`)
+    if(this.userId != null){
+      this.reviewService.GetReviewsForProfileDisplay(this.userId)
       .subscribe((data: any) => {
         console.log(data);
 
@@ -98,6 +109,9 @@ export class ProfileComponent implements OnInit {
           };
         });
       });
+    }
+
+    
   }
 
 
@@ -114,7 +128,7 @@ export class ProfileComponent implements OnInit {
   }
 
   editProfile() {
-    const urlUpdate = `http://ec2-52-200-236-21.compute-1.amazonaws.com/user?userId=${localStorage.getItem('UID')}&username=${this.myform.get('username')?.value}&bio=${this.myform.get('bio')?.value}`;
+    
 
   // Crear un objeto que represente la actualización del usuario
   const updateUser = {
@@ -122,9 +136,10 @@ export class ProfileComponent implements OnInit {
     bio: this.myform.get('bio')?.value,
     username: this.myform.get('username')?.value,
   };
+  console.log(updateUser)
 
-  // Realizar la solicitud PUT
-  this.httpClient.put<any>(urlUpdate, this.formImage, { headers: this.headers }).subscribe(
+  if(this.userId != null){
+    this.profileService.editProfile(this.userId,updateUser).subscribe(
     res => {
       alert('Profile Updated!');
     },
@@ -133,6 +148,7 @@ export class ProfileComponent implements OnInit {
       alert("An error has ocurred. Try again!")
     }
   );
+  }
   }
 
   closePopup(event: Event) {

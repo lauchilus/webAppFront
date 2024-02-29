@@ -88,9 +88,7 @@ export class RegisterComponent implements OnInit {
   }
 
   verifyUsername(username: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(
-      `http://localhost:8080/user/verify?username=${this.usernameReg}`
-    );
+    return this.authService.checkUser(this.email,username);
   }
   }
   

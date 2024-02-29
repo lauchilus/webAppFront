@@ -18,4 +18,5 @@ import { loggerInterceptor } from './logger.interceptor';
 export class AppComponent{
   title = 'gamelist';
   
+  
 }

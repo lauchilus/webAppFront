@@ -22,7 +22,7 @@ export class PopupReviewComponent implements OnInit {
 
   headers: HttpHeaders;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopupReviewComponent>, private form: MatFormFieldModule, private buildr: FormBuilder, private httpClient: HttpClient) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopupReviewComponent>, private form: MatFormFieldModule, private buildr: FormBuilder, private httpClient: HttpClient,private reviewService: ReviewService) {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -43,10 +43,6 @@ export class PopupReviewComponent implements OnInit {
 
   });
 
-
-
-  baseUrl: string = 'http://ec2-52-200-236-21.compute-1.amazonaws.com/reviews';
-
   AddReview() {
     const reviewpost: ReviewPost = {
       review: this.myform.value.review || "",
@@ -54,13 +50,12 @@ export class PopupReviewComponent implements OnInit {
       rating: + (this.myform.value.rating || 0),
       gameId: this.inputData.gameId, // Reemplaza con la propiedad correcta de inputData
     };
-    this.httpClient.post<Review>(this.baseUrl, reviewpost, { headers: this.headers }).subscribe(res => {
+    this.reviewService.PostReview(reviewpost).subscribe(res => {
       console.log(res);
-
       alert("Review Added!")
-    }, (error) => {
-      alert("Please Sign in");
-      
+    }, 
+    (error) => {
+      alert("Please Sign in");      
     }
 
     );

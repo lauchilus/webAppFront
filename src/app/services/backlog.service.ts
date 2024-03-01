@@ -20,7 +20,8 @@ export class BacklogService {
   }
   
 
-  DeleteBacklog(backlogId : string){
+  DeleteBacklog(backlogId : number){
+    console.log(`${this.baseUrl}/${backlogId}`)
     
     return this.httpClient.delete(`${this.baseUrl}/${backlogId}`);
 

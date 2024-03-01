@@ -7,7 +7,7 @@
         <div class="col-span-2 flex justify-center flex-row flex-wrap gap-3 items-center">
             <div class="container px-5 py-24 mx-auto">
                 <div class="flex flex-wrap sm:-m-4 -mx-2 -mb-10 -mt-4">
-                    @defer (on timer(5s)) {
+                    @defer () {
                         @for (item of listGames; track item.id) {
                             <div class="border-2 border-solid border-fuchsia-600 p-2 m-auto mb-4">
                                 <div class="p-4 md:w-1/4 sm:w-1/2 w-full mb-6 ">

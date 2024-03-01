@@ -1,66 +1,71 @@
 <div class="bg-gradient-to-r from-gray-900 to-violet-500 min-h-screen">
-    <div class="grid grid-cols-2 gap-4 px-24 pt-4 auto-rows-max">
+    <div class="container px-5 py-24 mx-auto">
         <div class="justify-self-auto">
-            <h2 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">Last All Played</h2>
+            <h2 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">All
+                Played</h2>
         </div>
 
         <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
-                
+
             <div class="container px-5 py-24 mx-auto">
 
-                <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
-                    @defer (on timer(3s)) {
-                        @for (item of playedList; track item.gameId) {
-
-
-
-                            <div
-                                class="p-4 md:w-1/3 sm:mb-0 mb-6 gap-2 flex flex-wrap flex-row  content-center">
-                                <div class="border-2 border-solid border-fuchsia-600  p-2 m-auto ">
-                                    <div class="rounded-lg overflow-hidden size-64 align-center">
-                                         <a href="/details/{{item.gameId}}"><img alt="content" class="object-cover object-center h-full w-full "
-                                            src="{{item.gameImage}}"></a>
-                                    </div>
-                                    <div class="text-cyan- text-white align-middle">
-                                        <h5 class="text-cyan- text-white align-middle">{{item.finish_date}}</h5>
-    
-    
-                                    </div>
-    
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
+                    @defer ( ) {
+                    @for (item of playedList; track item.gameId) {
+                        <div class="relative h-96 max-w-[28rem] overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
+                            <a href="/details/{{item.gameId}}">
+                                <img alt=""
+                                    class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none object-cover w-full aspect-square group-hover:scale-110 transition duration-300 ease-in-out"
+                                    src="{{item.gameImage}}" />
+                            </a>
+                        
+                            <div class="absolute bottom-0 left-0 right-0 px-4 py-2 bg-gray-800 opacity-70">
+                                <div class="text-left">
+                                    <h2 class="text-xl text-white font-bold">
+                                        Finish date: 
+                                        
+                                    </h2>
+                                    <h4 class="mt-2 text-sm text-white">{{item.finish_date}}</h4>
                                 </div>
-    
-    
                             </div>
-    
-                            }
-                    }
+                        </div> 
                     
+
+
+
+                    }
+                    }
+
                     @placeholder () {
-                        <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
-                            src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
-                        }
+                    <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
+                        src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
+                    }
                 </div>
             </div>
-
-
 
         </div>
 
         <div class="pb-5 flex justify-center">
             <div class="flex">
                 <!-- Previous Button -->
-                <button (click)="previousPagination()" class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                  <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-                  </svg>
-                  Previous
+                <button (click)="previousPagination()"
+                    class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 5H1m0 0 4 4M1 5l4-4" />
+                    </svg>
+                    Previous
                 </button>
                 <!-- Next Button -->
-                <button (click)="nextPage()" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                  Next
-                  <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                  </svg>
+                <button (click)="nextPage()"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    Next
+                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
                 </button>
             </div>
         </div>

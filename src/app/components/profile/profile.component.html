@@ -4,16 +4,14 @@
         <div class="flex-wrap container px-60">
             <div class="flex flex-wrap justify-between gap-4">
                 <div class=" flex items-center space-x-4">
-                    <img class="w-24 h-24 rounded-full"
-                        src="{{profilePic}}"
-                        alt="Rounded avatar">
+                    <img class="w-24 h-24 rounded-full" src="{{profilePic}}" alt="Rounded avatar">
                     <div>
 
                         <p class=" text-whitefont-semibold text-center font-medium text-4xl">{{username}}</p>
-                        
+
 
                     </div>
-                    
+
                     <div class="m-5">
                         <button (click)="editPopup=!editPopup"
                             class="flex p-2.5 bg-pink-500 rounded-xl hover:rounded-3xl hover:bg-pink-600 transition-all duration-300 text-white">
@@ -23,7 +21,7 @@
                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                         </button>
-                        
+
                         @if (editPopup) {
                         <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white z-30"
                             (click)="closePopup($event)">
@@ -76,12 +74,12 @@
 
                             </div>
                         </div>
-                        
+
 
                         }
                     </div>
 
-                    
+
                 </div>
                 <!--<div class="flex  ml-auto space-x-4 pt-4 m-auto ml-3">
                     <a href="/profile/played/{{userId}}" class="text-blue-500">Played</a>
@@ -129,26 +127,21 @@
             </div>
 
             <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
-                @defer ( on timer(5s)) {
+                @defer () {
                 @for (fav of favGames; track fav.id) {
                 <div>
-                    <a href="/details/{{fav.gameId}}">
-                        <div
-                            class="relative size-64 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
-                            <div [style.background-image]="fav.imageUrlTrust"
-                                class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none group-hover:filter brightness-110 transition-all">
-                                <div
-                                    class="absolute inset-0 to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50">
-                                </div>
-                            </div>
 
-                        </div>
-                    </a>
+                    <div
+                        class="relative size-64 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
+                        <a href="/details/{{fav.gameId}}">
+                            <img alt=""
+                                class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none object-cover w-full aspect-square group-hover:scale-110 transition duration-300 ease-in-out"
+                                src="{{fav.gameImageUrl}}" />
+                        </a>
+                    </div>
+
                 </div>
                 }
-
-
-
                 }
                 @placeholder () {
                 <img class="w-12 h-12 rounded-full" alt="loading..."
@@ -175,8 +168,8 @@
 
                 <div class="container px-5 py-24 mx-auto">
 
-                    <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
-                        @defer (on timer(3s)) {
+                    <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 ">
+                        @defer () {
                         @for (item of reviews; track item.gameId) {
 
 
@@ -184,8 +177,9 @@
                         <div class="p-4 md:w-1/3 sm:mb-0 mb-6 gap-2 flex flex-wrap flex-row ">
                             <div class="border-2 border-solid border-fuchsia-600  p-2 m-auto">
                                 <div class="rounded-lg overflow-hidden size-64 align-center">
-                                    <a href="/reviews/details/{{item.id}}"><img alt="content" class="object-cover object-center h-full w-full "
-                                        src="{{item.gameImage}}"></a>
+                                    <a href="/reviews/details/{{item.id}}"><img alt="content"
+                                            class="object-cover object-center h-full w-full "
+                                            src="{{item.gameImage}}"></a>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-medium title-font text-gray-900 mt-5 text-white">

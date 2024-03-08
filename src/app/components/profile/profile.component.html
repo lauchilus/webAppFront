@@ -10,7 +10,9 @@
                         <p class=" text-whitefont-semibold text-center font-medium text-4xl">{{username}}</p>
 
 
+
                     </div>
+
 
                     <div class="m-5">
                         <button (click)="editPopup=!editPopup"
@@ -26,8 +28,6 @@
                         <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white z-30"
                             (click)="closePopup($event)">
                             <div class="bg-gray-700 p-8 rounded " (click)="stopPropagation($event)">
-                                <!-- Contenido del pop-up -->
-
                                 <form [formGroup]="myform" class="max-w-lg mx-auto">
                                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                         for="user_avatar">Upload file</label>
@@ -77,18 +77,33 @@
 
 
                         }
+
+
+
                     </div>
 
 
                 </div>
-                <!--<div class="flex  ml-auto space-x-4 pt-4 m-auto ml-3">
-                    <a href="/profile/played/{{userId}}" class="text-blue-500">Played</a>
-                    <a href="#" class="text-blue-500">Follow</a>
-                    <a href="#" class="text-blue-500">Follower</a>
-                </div>-->
+                <div class="flex space-x-2 justify-between items-center mx-9 text-center mt-14">
+                    <div class="">
+                        <h3 class=" font-mono">Total Reviews</h3>
+                        <p class="font-mono text-neutral-200 text-4xl">{{ totalReviewsFromApi }}</p>
+                    </div>
+
+                    <div class="">
+                        <h3 class="font-mono">Total Played</h3>
+                        <p class="font-mono text-neutral-200 text-4xl">{{ totalPlayedFromApi }}</p>
+                    </div>
+
+                    <div class="">
+                        <h3 class="font-mono">Total Backlog</h3>
+                        <p class="font-mono text-neutral-200 text-4xl">{{ totalBacklogFromApi }}</p>
+                    </div>
+                </div>
 
             </div>
-
+            <h2 class=" text-whitefont-semibold text-left font-medium text-4xl pt-10">Bio</h2>
+            <p class=" text-whitefont-semibold text-left font-thin text-sm max-w-md break-words text-white">{{bio}}</p>
         </div>
 
 
@@ -123,7 +138,7 @@
                 </h2>
             </div>
             <div class="text-right underline underline-offset-1 text-purple-300">
-                <a href="/profile/favorites/{{userId}}">all</a>
+                <a href="/profile/favorites/{{userId}}">edit favs</a>
             </div>
 
             <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
@@ -132,10 +147,10 @@
                 <div>
 
                     <div
-                        class="relative size-64 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
+                        class="relative size-64 max-w-44 overflow-hidden rounded-xl bg-white bg-clip-border text-bottom text-gray-700 group transition-all duration-300 hover:border-yellow-500">
                         <a href="/details/{{fav.gameId}}">
                             <img alt=""
-                                class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none object-cover w-full aspect-square group-hover:scale-110 transition duration-300 ease-in-out"
+                                class="absolute inset-0 w-full h-full bg-cover bg-center text-gray-700 shadow-none object-cover aspect-square group-hover:scale-110 transition duration-300 ease-in-out"
                                 src="{{fav.gameImageUrl}}" />
                         </a>
                     </div>
@@ -153,62 +168,69 @@
         </div>
 
 
+
+
         <!--LAST REVIEWS-->
-        <div class="grid grid-cols-2 gap-4 px-24 mt-4 auto-rows-max ">
+        <div class="flex flex-wrap justify-between gap-4 mt-12 ml-28 pb-2">
             <div class="justify-self-auto">
                 <h2 class="text-left inline-block align-baseline underline underline-offset-1 text-purple-300">Last
                     Reviews
                 </h2>
             </div>
             <div class="text-right underline underline-offset-1 text-purple-300">
-                <a href="/profile/reviews/{{userId}}">all</a>
+                <a href="/profile/favorites/{{userId}}">all</a>
             </div>
+            <div class="container ml-80 ">
+                <div class="flex flex-col w-auto gap-2">
+                    @defer () {
+                    @for (item of reviews; track item.gameId) {
+                    <div
+                        class="flex flex-row rounded-lg w-3/4 h-auto bg-zinc-900 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white text-wrap">
 
-            <div class="col-span-2 flex justify-center flex-row flex-nowrap gap-4 items-center">
+                        <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:!rounded-none md:!rounded-s-lg"
+                            src="{{item.gameImage}}" alt="cover image" />
 
-                <div class="container px-5 py-24 mx-auto">
-
-                    <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 ">
-                        @defer () {
-                        @for (item of reviews; track item.gameId) {
-
-
-
-                        <div class="p-4 md:w-1/3 sm:mb-0 mb-6 gap-2 flex flex-wrap flex-row ">
-                            <div class="border-2 border-solid border-fuchsia-600  p-2 m-auto">
-                                <div class="rounded-lg overflow-hidden size-64 align-center">
-                                    <a href="/reviews/details/{{item.id}}"><img alt="content"
-                                            class="object-cover object-center h-full w-full "
-                                            src="{{item.gameImage}}"></a>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-medium title-font text-gray-900 mt-5 text-white">
-                                        {{item.name}}</h3>
-                                    <h5 class="text-cyan- text-white">{{item.date}}</h5>
-                                    <h3 class="text-amber-950 text-yellow-300">⭐{{item.rating}}</h3>
-                                    <p class="text-base leading-relaxed mt-2 text-white">{{item.review}}.</p>
-
-
-                                </div>
+                        <div class="flex flex-col justify-start p-6">
+                            <h1 class="mb-2 text-xl font-medium">{{item.name}}</h1>
+                            <div class="flex items-center">
+                                @for (item of getRatingArray(item.rating); track $index) {
+                                <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path
+                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                                }
 
                             </div>
 
-
+                            <article class="text-wrap w-3/5">
+                                <h3 class="mb-2 pt-2 text-xl font-medium">{{item.date | date: 'dd/MM/yyyy'}}</h3>
+                                <p class="mb-4 text-ellipsis overflow-hidden">
+                                    {{item.review}}
+                                </p>
+                            </article>
+                            <a href="/reviews/{{item.id}}" class="bg-pink-600 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-full w-32">
+                            See Review
+                        </a>
                         </div>
 
-                        }
-                        }
+                        
 
-                        @placeholder () {
-                        <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
-                            src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
-                        }
+
                     </div>
+
+
+                    }
+                    }
+
+                    @placeholder () {
+                    <img class="w-12 h-12 rounded-full m-auto" alt="loading..."
+                        src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif" />
+                    }
                 </div>
 
-
-
             </div>
+
         </div>
 
 

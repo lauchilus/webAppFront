@@ -19,6 +19,10 @@ export class ReviewService {
   }
 
   GetReviewsForProfileDisplay(id: string) : Observable<any>{
+    return this.httpClient.get(`${this.baseUrl}/profile/${id}`)      
+  }
+
+  GetReviewsDetails(id: string) : Observable<any>{
     return this.httpClient.get(`${this.baseUrl}/${id}`)      
   }
 

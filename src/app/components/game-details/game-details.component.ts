@@ -112,8 +112,7 @@ export class GameDetailsComponent implements OnInit {
         .subscribe((data: any) => {
           this.gameDetails = data;
           this.CreateConfigAlert("Added to played successfully!",data.HttpStatusCode,"success")
-          this.ShowAlert();
-          
+          this.ShowAlert();          
           this.ngOnInit()
         },
           (error) => {

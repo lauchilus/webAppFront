@@ -24,7 +24,7 @@ export const routes: Routes = [
     { path: 'search', component: SearchListGamesComponent },
     { path: 'profile/:id', component: ProfileComponent },
     { path: 'profile/played/:id', component: PlayedProfileComponent },
-    { path: 'reviews/details/:reviewId', component: ReviewDetailsComponent },
+    { path: 'reviews/:reviewId', component: ReviewDetailsComponent },
     { path: 'profile/reviews/:id', component: ReviewsProfileComponent },
     { path: 'profile/backlog/:id', component: BacklogProfileComponent },
     { path: 'profile/list/games/:listId', component: ListGamesComponent },

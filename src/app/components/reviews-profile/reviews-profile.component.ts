@@ -52,4 +52,8 @@ export class ReviewsProfileComponent {
     return this.sanitizer.bypassSecurityTrustStyle(`url('${url}')`);
   }
 
+  getRatingArray(rating: number): number[] {
+    return Array.from({ length: rating }, (_, index) => index);
+  }
+
 }

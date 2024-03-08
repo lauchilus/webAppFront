@@ -9,19 +9,24 @@ export const loggerInterceptor: HttpInterceptorFn = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
   // Write your logic 
-  console.log("Inside interceptor")
+  console.log("Inside interceptor" + req.method)
   const token = localStorage.getItem('token');
-  console.log(req.url+"QAAA")
+  console.log(req.url + "URL" + "METHOD"+ req.method) 
   if (req.urlWithParams.includes("register") || req.urlWithParams.includes("login") || req.urlWithParams.includes("verifyuser")) {
     return next(req);
   }
 
-  req = req.clone({
+  if(req.method === "GET"){
+    return next(req);
+  }else{
+     req = req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`,
-      uid : `${localStorage.getItem("uid")}`
+      uid : `${localStorage.getItem("UID")}`
     }
   })
+  }
+ 
 
   return next(req);
 }

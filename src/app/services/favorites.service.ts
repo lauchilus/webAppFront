@@ -14,7 +14,7 @@ export class FavoritesService {
 
 
   fetchDataFavoritesProfile(userId : string):Observable<any>{
-    return this.httpClient.get(`${this.baseUrl}/profile/${userId}`);
+    return this.httpClient.get(`${this.baseUrl}/${userId}`);
   }
 
   PostFavorite(user: string, game: number): Observable<any>{

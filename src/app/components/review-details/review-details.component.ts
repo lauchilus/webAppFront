@@ -24,7 +24,7 @@ export class ReviewDetailsComponent implements OnInit {
   }
 
   fetchDataPlayed() {
-    this.reviewService.GetReviewsForProfileDisplay(this.id)
+    this.reviewService.GetReviewsDetails(this.id)
       .subscribe((data: any) => {
         console.log(data);
 
@@ -35,6 +35,10 @@ export class ReviewDetailsComponent implements OnInit {
 
   getSafeImageUrl(url: string): any {
     return this.sanitizer.bypassSecurityTrustStyle(`url('${url}')`);
+  }
+
+  getRatingArray(rating: number): number[] {
+    return Array.from({ length: rating }, (_, index) => index);
   }
 
 }

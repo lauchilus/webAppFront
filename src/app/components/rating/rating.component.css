@@ -1,0 +1,12 @@
+/* rating.component.css */
+.fa-star-left {
+    /* Estilos para el lado izquierdo de la estrella (números impares) */
+    color: yellow;  /* Cambia esto según tu preferencia */
+    margin-right: 1px;  /* Ajusta el espaciado si es necesario */
+  }
+  
+  .fa-star-right {
+    /* Estilos para el lado derecho de la estrella (números pares) */
+    color: yellow;  /* Cambia esto según tu preferencia */
+    margin-left: 1px;  /* Ajusta el espaciado si es necesario */
+  }

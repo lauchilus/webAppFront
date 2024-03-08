@@ -20,4 +20,8 @@ export class PlayedService {
     return this.httpClient.post(`${this.baseUrl}/${user}?gameID=${game}`,null);
   }
 
+  DeletePlayed(id: string){
+    return this.httpClient.delete(`${this.baseUrl}/${id}`);
+  }
+
 }

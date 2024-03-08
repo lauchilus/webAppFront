@@ -19,14 +19,15 @@ export class ListGamesComponent implements OnInit {
 
   userId = localStorage.getItem("UID");
   list !: any;
+  name !: string ;
   listGames !: Gameslist[];
 
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: Router, private listInfo: ListInformation, private router: ActivatedRoute,private listService: ListService) {}
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {    
     
       this.list = this.router.snapshot.paramMap.get("listId");
+      this.name = this.router.snapshot.queryParamMap.get("name") ?? "unnamed list";
       this.fetchDataPlayed(this.list);
     
     

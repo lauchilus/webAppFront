@@ -52,14 +52,14 @@ export class SearchListGamesComponent implements OnInit {
   }
 
   nextPage() {
-    const offset = this.paginat.getOffset() + 12;
+    const offset = this.paginat.getOffset() + 36;
     this.paginat.setOffset(offset);
     this.fetchDataList(this.offset+12);
     }
     previousPagination() {
-      const offset = Math.max(0, this.paginat.getOffset() - 12);
+      const offset = Math.max(0, this.paginat.getOffset() - 36);
     this.paginat.setOffset(offset);
-      this.fetchDataList(Math.max(0, this.offset - 12));
+      this.fetchDataList(Math.max(0, this.offset - 36));
     }
   
 }

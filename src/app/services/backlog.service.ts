@@ -26,4 +26,8 @@ export class BacklogService {
     return this.httpClient.delete(`${this.baseUrl}/${backlogId}`);
 
   }
+
+  GetBacklogCount(id: string): Observable<any>{
+    return this.httpClient.get(`${this.baseUrl}/profile/total/${id}`) 
+  }
 }

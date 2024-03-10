@@ -12,6 +12,8 @@ import { ProfileService } from '../../services/profile.service';
 import { ReviewService } from '../../services/review.service';
 import { FavoritesService } from '../../services/favorites.service';
 import { RatingComponent } from "../rating/rating.component";
+import { PlayedService } from '../../services/played.service';
+import { BacklogService } from '../../services/backlog.service';
 
 @Component({
     selector: 'app-profile',
@@ -23,6 +25,10 @@ import { RatingComponent } from "../rating/rating.component";
 export class ProfileComponent implements OnInit {
 
   selectedRating = Array.from({ length: 5 }, (_, index) => index);
+  
+  totalReviewsFromApi = 0;    
+  totalPlayedFromApi = 0;     
+  totalBacklogFromApi = 0;     
 
   editPopup = false;
   avatar!: File;
@@ -48,7 +54,7 @@ export class ProfileComponent implements OnInit {
   idParam !: string;
 
 
-  constructor(private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer, private route: ActivatedRoute, private form: MatFormFieldModule, private buildr: FormBuilder, private profileService : ProfileService,private reviewService: ReviewService,private favoritesService : FavoritesService) { }
+  constructor(private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer, private route: ActivatedRoute, private form: MatFormFieldModule, private buildr: FormBuilder, private profileService : ProfileService,private reviewService: ReviewService,private favoritesService : FavoritesService,private playedService: PlayedService,private backlogService: BacklogService) { }
   ngOnInit(): void {
     
     this.headers = new HttpHeaders({
@@ -65,6 +71,10 @@ export class ProfileComponent implements OnInit {
     this.fetchDataFavorites();
     this.fetchDataReviews();
     this.fetchDataUser();
+    this.getReviewCount(this.idParam);
+    this.getPlayedCount(this.idParam);
+    this.getBacklogCount(this.idParam);
+    
   }
 
   getSafeImageUrl(url: string): any {
@@ -181,7 +191,6 @@ export class ProfileComponent implements OnInit {
   }
 
   onRatingClicked(rating: number): void {
-    //this.selectedRating = rating;
     this.cdr.detectChanges();
   }
 
@@ -189,10 +198,32 @@ export class ProfileComponent implements OnInit {
     return Array.from({ length: rating }, (_, index) => index);
   }
 
-  totalReviewsFromApi = 10;    // Ejemplo: valor recibido de la API
-  totalPlayedFromApi = 25;     // Ejemplo: valor recibido de la API
-  totalBacklogFromApi = 5;     // Ejemplo: valor recibido de la API
+  getPlayedCount(user : string){
+    return this.playedService.GetPlayedCount(user).subscribe(
+      res =>{
+        console.log(res)
+        this.totalPlayedFromApi = res.total
+      }
+    );
+  }
 
+  getReviewCount(user : string){
+    return this.reviewService.GetReviewCount(user).subscribe(
+      res =>{
+        console.log(res)
+        this.totalReviewsFromApi = res.total
+      }
+    );
+  }
+
+  getBacklogCount(user : string){
+    return this.backlogService.GetBacklogCount(user).subscribe(
+      res =>{
+        console.log(res)
+        this.totalBacklogFromApi = res.total
+      }
+    );
+  }
 
 
 

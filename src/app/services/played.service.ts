@@ -24,4 +24,8 @@ export class PlayedService {
     return this.httpClient.delete(`${this.baseUrl}/${id}`);
   }
 
+  GetPlayedCount(id: string): Observable<any>{
+    return this.httpClient.get(`${this.baseUrl}/profile/total/${id}`) 
+  }
+
 }

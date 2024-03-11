@@ -17,7 +17,7 @@ import { AlertComponent } from '../alert/alert.component';
 })
 export class ReviewsProfileComponent {
 
-  userId = localStorage.getItem("UID");
+  userId !: string;
   reviews : Review[] = [];
 
   editPopup = false;
@@ -31,6 +31,13 @@ export class ReviewsProfileComponent {
   
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: ActivatedRoute, private reviewService: ReviewService,private router: Router) {}
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      // Obtener el valor del parámetro :id
+      this.userId = params['id'];
+
+      // Ahora puedes usar this.userId en tu componente
+      console.log('User ID:', this.userId);
+    });
     this.fetchDataPlayed();
   }
 

@@ -24,11 +24,18 @@ export class ListsProfileComponent implements OnInit {
 
   objectToPass !: any ;
   listsUser !: List[]
-  userId = localStorage.getItem("UID"); ;
+  userId !: string;
 
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private router: ActivatedRoute,private authService:AuthService,private dialog: MatDialog,private route: Router,private listService:ListService) {}
 
   ngOnInit(): void {
+    this.router.params.subscribe(params => {
+      // Obtener el valor del parámetro :id
+      this.userId = params['id'];
+
+      // Ahora puedes usar this.userId en tu componente
+      console.log('User ID:', this.userId);
+    });
     this.fetchDataPlayed();
   }
 

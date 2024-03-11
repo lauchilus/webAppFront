@@ -25,12 +25,19 @@ export class PlayedProfileComponent implements OnInit {
   };
 
 
-  userId = localStorage.getItem("UID");;
+  userId !: string;
   playedList: Played[] = [];
   page: number = 0;
 
-  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: Router, private paginat: PaginationService, private playedService: PlayedService) { }
+  constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private route: Router, private paginat: PaginationService, private playedService: PlayedService,private routes : ActivatedRoute) { }
   ngOnInit(): void {
+    this.routes.params.subscribe(params => {
+      // Obtener el valor del parámetro :id
+      this.userId = params['id'];
+
+      // Ahora puedes usar this.userId en tu componente
+      console.log('User ID:', this.userId);
+    });
     this.page = this.paginat.getOffset();
     this.fetchDataPlayed(this.page);
   }

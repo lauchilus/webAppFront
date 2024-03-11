@@ -28,14 +28,20 @@ export class BacklogProfileComponent implements OnInit {
 
   listGames: Backlogs[] = [];
   offset: number = 0;
-
+  userId !: string;
 
 
 
   constructor(private httpClient: HttpClient, private sanitizer: DomSanitizer, private paginat: PaginationService, private route: ActivatedRoute, private backlogService: BacklogService, private router: Router) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      // Obtener el valor del parámetro :id
+      this.userId = params['id'];
 
+      // Ahora puedes usar this.userId en tu componente
+      console.log('User ID:', this.userId);
+    });
     this.fetchDataList();
     console.log(this.listGames)
     this.offset = this.paginat.getOffset()
@@ -43,9 +49,8 @@ export class BacklogProfileComponent implements OnInit {
   }
 
   fetchDataList() {
-    const userId = localStorage.getItem('UID')
-    if (userId != null) {
-      this.backlogService.GetAllBacklogs(userId)
+    if (this.userId != null) {
+      this.backlogService.GetAllBacklogs(this.userId)
         .subscribe((data: any) => {
           console.log(data);
 

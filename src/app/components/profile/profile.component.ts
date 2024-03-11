@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Gameslist } from '../../models/gameslist';
@@ -14,17 +14,27 @@ import { FavoritesService } from '../../services/favorites.service';
 import { RatingComponent } from "../rating/rating.component";
 import { PlayedService } from '../../services/played.service';
 import { BacklogService } from '../../services/backlog.service';
+import { ConfigAlert } from '../../models/ConfigAlert';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [CommonModule, HttpClientModule, FormsModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, RatingComponent,DatePipe]
+    imports: [CommonModule, HttpClientModule, FormsModule,AlertComponent, MatFormFieldModule, FormsModule, ReactiveFormsModule, RatingComponent,DatePipe]
 })
 export class ProfileComponent implements OnInit {
 
+  showAlert = false;
+  configAlert: ConfigAlert = {
+    msg: '',
+    status: HttpStatusCode.Accepted,
+    state: 'success'
+  };
+
   selectedRating = Array.from({ length: 5 }, (_, index) => index);
+  edit = false;
   
   totalReviewsFromApi = 0;    
   totalPlayedFromApi = 0;     
@@ -225,8 +235,50 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  DeleteButton(){
+    this.edit = !this.edit;
+  }
 
+  DeleteFavorite(id: any){
+    this.favoritesService.Delete(id).subscribe(
+      (res: any) => {
+        this.CreateConfigAlert("deleted from favorites successfully!", res.HttpStatusCode, "success");
+        this.ShowAlert();
+        this.fetchDataFavorites()
 
+      },
+      (error) => {
+        if (error.HttpStatusCode === 401) {
+          this.CreateConfigAlert("Please Sign in!", error.HttpStatusCode, "error")
+          this.ShowAlert();
+
+        } else {
+          this.CreateConfigAlert(error.error.msg, error.HttpStatusCode, "error")
+          this.ShowAlert();
+        }
+
+      }
+    );
+  }
+
+  CreateConfigAlert(msg: string, status: HttpStatusCode, state: "error" | "success") {
+    const config: ConfigAlert = {
+      msg,
+      status,
+      state
+    }
+
+    this.configAlert = config;
+  }
+
+  ShowAlert() {
+    this.showAlert = true;
+  }
+
+  CloseAlert() {
+
+    this.showAlert = false;
+  }
 }
 interface FormModel {
   username?: string | null;

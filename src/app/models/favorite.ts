@@ -1,5 +1,5 @@
 export interface Favorite {
-    id: number,
+    id: string,
     gameId: number,
     name: string,
     gameImageUrl: string,

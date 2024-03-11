@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FavoritesService {
+  
 
 
   baseUrl = `http://localhost:8080/api/v1/favorites`;
@@ -19,6 +20,10 @@ export class FavoritesService {
 
   PostFavorite(user: string, game: number): Observable<any>{
     return this.httpClient.post(`${this.baseUrl}/${user}?gameId=${game}`,null);
+  }
+
+  Delete(id: any) {
+    return this.httpClient.delete(`${this.baseUrl}/${id}`)
   }
 
 }

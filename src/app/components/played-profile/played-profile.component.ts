@@ -24,7 +24,7 @@ export class PlayedProfileComponent implements OnInit {
     state: 'success'
   };
 
-
+  edit = false;
   userId !: string;
   playedList: Played[] = [];
   page: number = 0;
@@ -121,4 +121,14 @@ export class PlayedProfileComponent implements OnInit {
 
     this.showAlert = false;
   }
+
+  ShowDeleteButton(){
+    this.edit = !this.edit;
+  }
+
+  DeleteButtonFalse(){
+    this.edit = false;
+  }
+
+
 }

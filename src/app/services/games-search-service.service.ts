@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class GamesSearchServiceService {
   
-  baseUrlSearchGames: string = 'http://localhost:8080/api/v1/games';
+  baseUrlSearchGames: string = 'https://gamelist-backend-lauchilus.koyeb.app/api/v1/games';
 
   constructor(private pagination: PaginationService, private httpClient:HttpClient){}
 

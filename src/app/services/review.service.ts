@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ReviewService {
   
-  baseUrl: string = 'http://localhost:8080/api/v1/reviews';
+  baseUrl: string = 'https://gamelist-backend-lauchilus.koyeb.app/api/v1/reviews';
 
   constructor(private httpClient: HttpClient) { }
 

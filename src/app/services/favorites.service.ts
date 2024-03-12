@@ -9,7 +9,7 @@ export class FavoritesService {
   
 
 
-  baseUrl = `http://localhost:8080/api/v1/favorites`;
+  baseUrl = `https://gamelist-backend-lauchilus.koyeb.app/api/v1/favorites`;
 
   constructor(private httpClient : HttpClient) { }
 

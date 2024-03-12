@@ -14,7 +14,7 @@ export class AuthService {
   loggedIn = false;
   private _miVariable = new BehaviorSubject<boolean>(false);
 
-  baseUrl: string = `http://localhost:8080/auth`
+  baseUrl: string = `https://gamelist-backend-lauchilus.koyeb.app/auth`
 
   firebaseConfig = {
     apiKey: "AIzaSyBrUuNI_JjJngqir_fbymc1YL7OECJyx6g",

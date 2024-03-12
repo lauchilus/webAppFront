@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ListService {
 
-  baseUrl = `http://localhost:8080/api/v1/lists`;
+  baseUrl = `https://gamelist-backend-lauchilus.koyeb.app/api/v1/lists`;
 
   constructor(private httpClient : HttpClient) { }
 

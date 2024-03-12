@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class PlayedService {
 
-  baseUrl = `http://localhost:8080/api/v1/played`;
+  baseUrl = `https://gamelist-backend-lauchilus.koyeb.app/api/v1/played`;
 
   constructor(private httpClient : HttpClient) { }
 

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class BacklogService {
   
-  baseUrl = `http://localhost:8080/api/v1/backlogs`;
+  baseUrl = `https://gamelist-backend-lauchilus.koyeb.app/api/v1/backlogs`;
 
   constructor(private httpClient : HttpClient) { }
 
